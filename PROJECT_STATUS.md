@@ -1,8 +1,8 @@
 # Project status — 2026-09-08
 
-## Crownlands development checkpoint — release pending
+## Crownlands release — published and verified
 
-Started from verified GitHub main `5e604f027eae9ff3e282c1e88028ba5c096c46fc`. The user approved A2 bright chibi art with stern heroes and requested expanded combat, a coin-funded equipment shop and themed lands ending in masters. The current redesign is in the working tree; final QA, commit, synchronization and deployment are in progress. Do not describe Crownlands as published until the release evidence below is updated.
+Started from verified GitHub main `5e604f027eae9ff3e282c1e88028ba5c096c46fc`. The user approved A2 bright chibi art with stern heroes and requested expanded combat, a coin-funded equipment shop and themed lands ending in masters. The redesign was committed and deployed as `2c1def2dd8cb3dd63ab17366d9c6f44422cde4ed`. GitHub Actions run `34267861389` completed successfully. The public Pages URL was opened in the cloud browser and the Crownlands entry and new hero cover were visually verified.
 
 Implemented:
 - New production entry `adventure.js`, deterministic `adventure-engine.mjs`, responsive `adventure.css` and `sprite-texture.mjs`; retained legacy modules/tests.
@@ -20,7 +20,9 @@ Validation completed during development:
 
 The temporary QA fixture and unused background atlas were removed from production. Asset tests check WebP headers, the production entry and preservation of enclosed white sprite details.
 
-Remaining before release: run final complete tests/syntax/whitespace checks, commit/push normally, verify a clean local tree equal to origin/main, then verify the Pages workflow and live entry/assets. Record final evidence rather than treating earlier checks as proof of the final revision.
+Final validation: complete `npm test`, production syntax and whitespace checks passed locally. GitHub CI repeated all tests and syntax checks successfully and deployed `dist`. Release commit was pushed through the GitHub connector without force; local staged tree matched the uploaded tree, fetch completed, and local main was clean and equal to origin/main (0 ahead, 0 behind). This follow-up documentation-only commit records deployment evidence with `[skip ci]`.
+
+Next task: gather play feedback on pacing and difficulty; consider authored animation frames and more distinct ordinary enemies. No known release-blocking issue remains from the completed checks.
 
 Known limits: six enemy images across twelve encounters, single-pose transform-based character animation, statistical gear rather than outfit changes, linear English-language campaign. No physical-phone performance test or external human playtest is claimed. Balance simulations do not establish enjoyment or retention.
 

@@ -6,7 +6,7 @@ An original, colorful chibi fantasy game with stern heroes: Aster the white-hair
 
 Repository: https://github.com/roibenyehuda2-arch/arena-heir — branch `main`. Read `AGENTS.md`, `GAME_DESIGN.md` and `PROJECT_STATUS.md` before working. Both ChatGPT accounts use this repository and alternate only after a verified pushed handoff.
 
-Existing public game URL: https://roibenyehuda2-arch.github.io/arena-heir/ . The Crownlands redesign is being validated; see PROJECT_STATUS.md for the latest deployment evidence. Do not infer that uncommitted changes are live. The user enabled GitHub Actions as the Pages source and approved the public repository. Main pushes run the full tests and syntax checks, then deploy only `dist` through `.github/workflows/pages.yml`.
+Existing public game URL: https://roibenyehuda2-arch.github.io/arena-heir/ . Crownlands is published; see PROJECT_STATUS.md for the verified release commit and workflow evidence. The user enabled GitHub Actions as the Pages source and approved the public repository. Main pushes run the full tests and syntax checks, then deploy only `dist` through `.github/workflows/pages.yml`.
 
 The old Sites URL https://arena-heir.roibenyehuda2.chatgpt.site is an earlier 3D version. Preserve `.openai/hosting.json`; no replacement Sites project is needed.
 
