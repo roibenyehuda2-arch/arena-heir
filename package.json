@@ -1,0 +1,13 @@
+{
+  "name": "arena-heir",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "test": "node tests/engine.test.mjs && node tests/rig.test.mjs && node tests/presentation.test.mjs && node tests/three.test.mjs && node tests/assets.test.mjs"
+  },
+  "devDependencies": {
+    "three": "^0.185.1",
+    "vite": "8.2.2"
+  }
+}
