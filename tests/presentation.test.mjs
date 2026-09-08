@@ -2,11 +2,12 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import * as engine from '../dist/engine.mjs';
+import * as actionInfo from '../dist/action-info.mjs';
 import {positions} from '../dist/arena-layout.mjs';
 const state=engine.newRun('QA');state.bonus=3;
 let click;
 const app={innerHTML:'',addEventListener:(name,fn)=>{if(name==='click')click=fn;}};
-const context=vm.createContext({...engine,structuredClone,console,
+const context=vm.createContext({...engine,...actionInfo,structuredClone,console,
   CombatDirector:class{mount(){}dispose(){}},
   localStorage:{getItem:()=>JSON.stringify(state),setItem(){}},
   document:{querySelector:()=>app,addEventListener(){}}

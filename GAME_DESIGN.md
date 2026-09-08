@@ -15,3 +15,5 @@ Story proposal: a living Crown remembers champions; scattered Laurels call three
 Art limits: three unique hero sheets, one shared boar-rival sheet, one arena, one map and an equipment atlas. Rivals reuse the same illustration with palette changes. Equipment currently affects stats and displays an icon/badge, not a modular outfit attached to the character. Unique masters, paper-doll gear and illustrated story scenes remain future work.
 
 Priorities: readable faces/silhouettes, clear tactical feedback, coherent original art, accessible controls/reduced motion, lightweight assets and honest action forecasts. Human playtesting is required to assess enjoyment.
+
+Action copy is hero-aware: Suri Strike has base damage 8 and basic attack range 2; Tovin Crush has base damage 20 and Guard absorbs 14; Miri full Guard primes +3, other heroes +2; Suri Dodge primes +5, other heroes +4. Weapon and stored next-hit bonuses modify base damage. Forecasts are simulated from the actual engine and separately identify poison/recoil health loss. These are existing mechanics, not balance changes.

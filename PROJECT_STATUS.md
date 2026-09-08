@@ -1,6 +1,31 @@
 # Project status — 2026-09-08
 
-## READY for alternating-account handoff
+## Latest development checkpoint — second account
+
+Started from verified GitHub main 91d81b839cc564dd36679efe4d5792a2ea1cce4a after the first account stopped. GitHub remains the only source of truth; no Sites history was merged.
+
+Changes:
+- Added dist/action-info.mjs for hero-aware Strike/Crush damage descriptions, range, Guard amounts/counter bonuses and Dodge bonuses. Updated buttons, accessible labels, contextual range hint, arena reach label and help. Combat rules are unchanged.
+- Forecasts now distinguish incoming hits from poison and recoil health loss.
+- Added action-info and journey regressions; existing presentation test imports the new presentation helpers.
+
+Validation:
+- Hero-specific copy/forecast tests passed for all three heroes, including preservation of live state and stronger stored bonuses.
+- Journey tests passed: 63 hero/round/reward combinations; final-master Echo replacement/cancel; duplicate reward rejection; weapon/armor/healing purchases; insufficient funds; travel; save/exit/reload; invalid JSON/basic invalid save rejection; legacy save migration. These run the real game UI handlers against a minimal DOM stub, not a browser.
+- Existing engine (300 seeded simulations, 260 completions), rig, presentation and 3D suites passed.
+- Full npm test is NOT green in this environment: legacy asset validation stops at missing knight.glb. All seven illustrated WebP assets and other downloaded files were byte-length/Git-blob-SHA verified.
+- Browser/mobile QA at 320/390 remains incomplete. The supervised preview briefly became healthy, but browser transport reset and subsequent navigation was refused; preview status then reported stopped. No visual pass is claimed. Do not infer physical-device testing from simulated layout tests.
+
+Synchronization method/limitations:
+- Shell Git authentication is unavailable. The authenticated GitHub connector supplied a hash-verified partial checkout: 55 of the original 62 blobs, all tree objects and the exact main commit (original timezone +0300). History is shallow at the handoff commit.
+- Seven unchanged legacy binaries could not be fetched: dist/arena.png, dist/fighters.png, dist/hero-combat.png, dist/rig-parts.png, dist/rival-combat.png, dist/assets/models/barbarian.glb, dist/assets/models/knight.glb. They remain in the Git index with skip-worktree and must remain unchanged in the remote tree. A clean status is for this partial checkout, not proof of a complete clone. Do not remove those files or mark their tests passed. Prefer a full authenticated clone when available.
+- Publish task-owned files using a tree based on the existing GitHub tree, a single-parent commit, and non-forced main update. Recheck the remote before and after publication; require the local index tree and remote tree to match. No shell push success is claimed.
+
+Next: complete actual 320/390 browser QA for combat/rewards/shop/save; run full npm test from a complete checkout. Known deeper malformed-save validation and new-run overwrite confirmation remain unresolved, as do the map/art issues below.
+
+Deployment: no deployment requested or performed. sites_get_site returned project not found for appgprj_6a9e6739409c81919c47b225588b2280 in this account. Existing hosting.json is unchanged; no replacement Site was created. Published URL remains recorded as the older 3D version, not reverified here.
+
+## Previous handoff checkpoint
 
 Complete import verified at GitHub main commit 5d67b392be99d7c13568f88663d0f54c5f2fa15a: all 62 tracked blobs matched local SHA values; root tree matched 4953099bb55c222ba37a855757714d0b17e1c704. This documentation completion commit follows that import. Use current GitHub main HEAD for the handoff SHA.
 
@@ -42,7 +67,7 @@ Earlier cloud browser QA inspected desktop opening, character choices, map and b
 
 1. All rivals share boar art and one arena; unique masters/regions missing.
 2. Gear is a stat upgrade plus badge, not interchangeable equipment on the fighter.
-3. BASIC descriptions disagree with hero-specific mechanics; correct and regression-test forecasts/copy.
+3. Hero-specific BASIC copy/forecasts corrected in the latest checkpoint; actual mobile browser inspection remains pending.
 4. Map copy overlaps some nodes; map geography and route order need alignment.
 5. CSS contains stale PNG declarations overridden by WebP rules; consolidate and inspect requests.
 6. Verify rival facing, all poses, animation pacing, mute/audio disposal and reduced motion.

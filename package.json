@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "test": "node tests/engine.test.mjs && node tests/rig.test.mjs && node tests/presentation.test.mjs && node tests/three.test.mjs && node tests/assets.test.mjs"
+    "test": "node tests/action-info.test.mjs && node tests/journey.test.mjs && node tests/engine.test.mjs && node tests/rig.test.mjs && node tests/presentation.test.mjs && node tests/three.test.mjs && node tests/assets.test.mjs"
   },
   "devDependencies": {
     "three": "^0.185.1",
