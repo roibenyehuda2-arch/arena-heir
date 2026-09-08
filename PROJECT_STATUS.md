@@ -1,97 +1,39 @@
 # Project status — 2026-09-08
 
-## Live GitHub Pages deployment — supersedes earlier setup notes
+## Crownlands development checkpoint — release pending
 
-The user explicitly authorized making the repository public and enabled Pages with GitHub Actions. The illustrated game is now deployed at https://roibenyehuda2-arch.github.io/arena-heir/ from commit 27322ebc31deedec8f43311294993be06fb0b70b. Workflow run 34227951288, attempt 2, passed validation and deployment. All npm test suites, including legacy assets on the complete CI checkout, and production syntax checks passed. The live URL returned HTTP 200 and the expected illustrated game HTML entry (game2d.js).
+Started from verified GitHub main `5e604f027eae9ff3e282c1e88028ba5c096c46fc`. The user approved A2 bright chibi art with stern heroes and requested expanded combat, a coin-funded equipment shop and themed lands ending in masters. The current redesign is in the working tree; final QA, commit, synchronization and deployment are in progress. Do not describe Crownlands as published until the release evidence below is updated.
 
-This checkpoint changes documentation only. No new visual/mobile test is claimed; 320/390 browser QA remains pending. Existing Sites hosting is preserved. Browser saves do not automatically transfer to the new origin. Future pushes to main deploy after successful validation. Earlier private-repository and not-deployed statements below are historical.
+Implemented:
+- New production entry `adventure.js`, deterministic `adventure-engine.mjs`, responsive `adventure.css` and `sprite-texture.mjs`; retained legacy modules/tests.
+- Aster the white-haired mage, Rowan the ranger and Borin the bearded dwarf, with distinct attacks, real ranger multihits and class-specific projectiles/melee playback.
+- Twelve encounters across forest, fire and magic, three masters, visible intent/forecasts, fractures, focus ultimates, perfect blocks, enrage and prolonged-fight pressure.
+- Guaranteed victory coins plus extra rewards, three realm Echoes, three equipment tiers, healing tonics, camp and travel recovery.
+- Original A2 cover and hero art, six enemy illustrations and three wide realm backgrounds. Enemy atlas background is keyed at runtime so enemies remain opaque.
+- Version-3 local saves, explicit old-save import, stronger malformed-save rejection and confirmation before replacing an active journey.
 
-## GitHub Pages setup checkpoint
+Validation completed during development:
+- New deterministic tests passed for 108 reward combinations, three complete class campaigns, volleys, forecasts without live-state mutation, cooldowns, fractures, focus, equipment, migration and invalid saves.
+- New mock-DOM UI handler tests passed for combat playback, save/reload, rewards, purchases and travel. These are not visual browser tests.
+- A full checkout has now been restored, including the seven legacy binaries previously missing. The full legacy tests passed locally; the earlier partial-checkout blocker is resolved.
+- Cloud browser checks covered desktop opening, hero selection, map and live combat, plus 320/390 CSS-pixel layouts and master combat. The inspection found translucent enemies and health displays overlapping heads; fixes were applied. Final browser recheck passed: health displays no longer obscure heads, enemies are opaque, and 320/390 layouts have no horizontal overflow. A dwarf skill/ultimate victory, coin reward, Ironbark axe purchase (210 to 165 coins), save/exit and resume preserved the upgraded equipment and coins.
 
-User approved publishing through GitHub Pages at a new URL, retaining the old Sites site and the private repository. Added `.github/workflows/pages.yml`: push to main/manual trigger, full game tests on GitHub's complete checkout, production syntax checks, static `dist` upload, and a dependent deployment job using minimal Pages/OIDC permissions. No gameplay changes in this setup.
+The temporary QA fixture and unused background atlas were removed from production. Asset tests check WebP headers, the production entry and preservation of enclosed white sprite details.
 
-The connector has no Pages configuration operation; its generic fetch rejects the `/pages` endpoint. Pages enablement and plan eligibility are NOT verified. The repository administrator must select Settings > Pages > Source: GitHub Actions and run the workflow if necessary. Do not claim a live deployment until an Actions deployment succeeds and reports its URL. No repository visibility change or new Sites project is authorized by this setup.
+Remaining before release: run final complete tests/syntax/whitespace checks, commit/push normally, verify a clean local tree equal to origin/main, then verify the Pages workflow and live entry/assets. Record final evidence rather than treating earlier checks as proof of the final revision.
 
-The prior mobile/browser and partial-checkout limitations remain. The complete legacy-asset test must pass in the workflow before deployment. Local partial checkout remains missing seven unchanged legacy binaries; they are retained in the remote tree.
+Known limits: six enemy images across twelve encounters, single-pose transform-based character animation, statistical gear rather than outfit changes, linear English-language campaign. No physical-phone performance test or external human playtest is claimed. Balance simulations do not establish enjoyment or retention.
 
-## Latest development checkpoint — second account
+## Last verified published version
 
-Started from verified GitHub main 91d81b839cc564dd36679efe4d5792a2ea1cce4a after the first account stopped. GitHub remains the only source of truth; no Sites history was merged.
+Existing public URL: https://roibenyehuda2-arch.github.io/arena-heir/ . The previous illustrated game was deployed from `27322ebc31deedec8f43311294993be06fb0b70b`, workflow run `34227951288`, attempt 2. Validation/deployment succeeded and HTTP 200 with the previous `game2d.js` entry was verified. The following `5e604f027eae9ff3e282c1e88028ba5c096c46fc` checkpoint changed documentation only.
 
-Changes:
-- Added dist/action-info.mjs for hero-aware Strike/Crush damage descriptions, range, Guard amounts/counter bonuses and Dodge bonuses. Updated buttons, accessible labels, contextual range hint, arena reach label and help. Combat rules are unchanged.
-- Forecasts now distinguish incoming hits from poison and recoil health loss.
-- Added action-info and journey regressions; existing presentation test imports the new presentation helpers.
+The user explicitly approved making the repository public and selected GitHub Actions for Pages. Future main pushes deploy after validation; no extra provider token is needed. GitHub is the source of truth. Both ChatGPT accounts should alternate after verified handoffs, not edit main concurrently.
 
-Validation:
-- Hero-specific copy/forecast tests passed for all three heroes, including preservation of live state and stronger stored bonuses.
-- Journey tests passed: 63 hero/round/reward combinations; final-master Echo replacement/cancel; duplicate reward rejection; weapon/armor/healing purchases; insufficient funds; travel; save/exit/reload; invalid JSON/basic invalid save rejection; legacy save migration. These run the real game UI handlers against a minimal DOM stub, not a browser.
-- Existing engine (300 seeded simulations, 260 completions), rig, presentation and 3D suites passed.
-- Full npm test is NOT green in this environment: legacy asset validation stops at missing knight.glb. All seven illustrated WebP assets and other downloaded files were byte-length/Git-blob-SHA verified.
-- Browser/mobile QA at 320/390 remains incomplete. The supervised preview briefly became healthy, but browser transport reset and subsequent navigation was refused; preview status then reported stopped. No visual pass is claimed. Do not infer physical-device testing from simulated layout tests.
+## Preserved history and hosting
 
-Synchronization method/limitations:
-- Shell Git authentication is unavailable. The authenticated GitHub connector supplied a hash-verified partial checkout: 55 of the original 62 blobs, all tree objects and the exact main commit (original timezone +0300). History is shallow at the handoff commit.
-- Seven unchanged legacy binaries could not be fetched: dist/arena.png, dist/fighters.png, dist/hero-combat.png, dist/rig-parts.png, dist/rival-combat.png, dist/assets/models/barbarian.glb, dist/assets/models/knight.glb. They remain in the Git index with skip-worktree and must remain unchanged in the remote tree. A clean status is for this partial checkout, not proof of a complete clone. Do not remove those files or mark their tests passed. Prefer a full authenticated clone when available.
-- Publish task-owned files using a tree based on the existing GitHub tree, a single-parent commit, and non-forced main update. Recheck the remote before and after publication; require the local index tree and remote tree to match. No shell push success is claimed.
+Original tracked import was verified at `5d67b392be99d7c13568f88663d0f54c5f2fa15a`; the first-account handoff referenced `91d81b839cc564dd36679efe4d5792a2ea1cce4a`. Earlier work corrected hero-aware action descriptions and added legacy journey tests. Those mechanics now remain in retained legacy code, not the Crownlands production entry.
 
-Next: complete actual 320/390 browser QA for combat/rewards/shop/save; run full npm test from a complete checkout. Known deeper malformed-save validation and new-run overwrite confirmation remain unresolved, as do the map/art issues below.
+The original Sites URL https://arena-heir.roibenyehuda2.chatgpt.site is the older 3D version. Project `appgprj_6a9e6739409c81919c47b225588b2280` is inaccessible from this account. Its `.openai/hosting.json` identity remains unchanged; no replacement Site or history merge was made. Browser saves do not automatically transfer between Sites and Pages.
 
-Deployment: no deployment requested or performed. sites_get_site returned project not found for appgprj_6a9e6739409c81919c47b225588b2280 in this account. Existing hosting.json is unchanged; no replacement Site was created. Published URL remains recorded as the older 3D version, not reverified here.
-
-## Previous handoff checkpoint
-
-Complete import verified at GitHub main commit 5d67b392be99d7c13568f88663d0f54c5f2fa15a: all 62 tracked blobs matched local SHA values; root tree matched 4953099bb55c222ba37a855757714d0b17e1c704. This documentation completion commit follows that import. Use current GitHub main HEAD for the handoff SHA.
-
-Local main now uses the same GitHub commit objects and origin/main upstream; earlier internal history is safely retained in local archive/pre-github-import. No gameplay files are left uncommitted. Upload used the authenticated GitHub connector, not shell git push. npm test and git diff --check passed again. No new deployment occurred.
-
-NEXT TASK: with the second account connected to this private GitHub repo, clone main and follow AGENTS.md. Resume hero-aware action descriptions and 320/390px reward/shop/save QA when asked to develop. No need to repeat repository setup. The older blocker notes below are historical and do not override this READY section.
-
-## GitHub import checkpoint
-
-The user created private https://github.com/roibenyehuda2-arch/arena-heir and granted the connector write access. The complete tracked snapshot is being imported via GitHub Git objects with blob/tree hash verification, because shell Git credentials are not configured. The published main commit is the canonical handoff; consult GitHub main for its SHA. Older local history remains preserved locally. No deployment or gameplay changes are part of this import.
-
-Both accounts must connect this same private repository. A fresh clone of GitHub main is the recommended starting point. Do not merge the earlier internal Sites history into it. If shell authentication is absent, use an authenticated supported GitHub workflow; do not fabricate a successful git push.
-
-## Historical synchronization blockers (resolved by new target access)
-
-Follow-up verification: connected GitHub lists only my-home-priority and Photonicom; neither is the game target. Available connector has no repository-creation operation. Plugin discovery found only that already-installed connector. No gh executable, GH_TOKEN, GITHUB_TOKEN or Git credential helper is configured. User authorized repository creation, but the required capability is unavailable. Ask for an empty private arena-heir repository connected to the integration; do not reuse unrelated repositories or claim a push succeeded.
-
-Latest checkpoint validation rerun: npm test (all suites), three production syntax checks and git diff --check passed. No gameplay changes in this follow-up. Local checkpoint remains unpushed; do not begin second-account work yet.
-
-Main branch: main. No origin remote exists. Only the internal Sites source remote named site exists; it is not GitHub. Search user:roibenyehuda2-arch arena returned no repositories (not proof that a private repository does not exist). git fetch site failed for unavailable HTTPS authentication. Do not switch accounts until GitHub push and matching remote HEAD are verified.
-
-Prior committed baseline: 4ce363f1d9872096cbe68a8520788ff6027771c6. This task checkpoints the already-existing illustrated work and synchronization documentation locally. Obtain the checkpoint SHA with git rev-parse HEAD; a file cannot embed its own commit hash.
-
-Required next input: accessible GitHub repository URL, or an empty repository connected to both accounts. Inspect any nonempty target before import. Do not use My Home Priority. No remote push completed in this task.
-
-## Implemented
-
-Illustrated production entry game2d.js; opening, three selectable heroes, map, seven fights/two masters, Tribute/Trophy/Echo rewards, caravan and ending. Seven optimized WebP illustrations (~2.5 MB). CombatDirector supports sprite sheets without trying to construct a missing skeleton. Distinct hero mechanics, final-master reward before ending, and coins only through Tribute. Legacy 3D code remains for rollback, unused by production entry.
-
-No gameplay edits were made for this docs/synchronization request; existing work was preserved.
-
-## QA evidence
-
-npm test passed: engine, legacy rig, presentation, legacy 3D and assets. 300 seeded bot simulations: 260 completions, all seven encounters reachable. This is not evidence of human enjoyment or approved balance. Syntax checks for game2d/combat/engine and diff whitespace passed before handoff.
-
-Earlier cloud browser QA inspected desktop opening, character choices, map and battle, and played leap/enemy retaliation plus four actions through the first victory/reward screen. Transparent-art layering bug fixed. No app error observed in checked flow; extension errors were unrelated. Current mobile, all heroes, full campaign, reward/shop/save and reduced-motion QA remain incomplete. Standalone Chromium was unavailable; cloud Sites preview worked.
-
-## Known issues / next development
-
-1. All rivals share boar art and one arena; unique masters/regions missing.
-2. Gear is a stat upgrade plus badge, not interchangeable equipment on the fighter.
-3. Hero-specific BASIC copy/forecasts corrected in the latest checkpoint; actual mobile browser inspection remains pending.
-4. Map copy overlaps some nodes; map geography and route order need alignment.
-5. CSS contains stale PNG declarations overridden by WebP rules; consolidate and inspect requests.
-6. Verify rival facing, all poses, animation pacing, mute/audio disposal and reduced motion.
-7. New-run save replacement lacks confirmation; strengthen malformed-save validation.
-8. Story scenes, branching routes, full campaign and external playtesting are not implemented.
-
-FIRST resolve GitHub synchronization and validate a clean clone with all source/assets/docs. Then, only when development resumes, fix hero-specific copy and finish 320/390px plus reward/shop/save QA before expanding content.
-
-## Published version
-
-Existing URL: https://arena-heir.roibenyehuda2.chatgpt.site
-
-Last recorded publication: Sites version 7, older 3D baseline; live deployment was not reverified in this documentation task. Illustrated work is NOT deployed. Preserve project ID appgprj_6a9e6739409c81919c47b225588b2280. GitHub access does not grant the second account permission to deploy that Site.
+Shell push authentication was historically unavailable; the supported GitHub connector can publish Git objects with a non-forced main update. Public fetch now works and the full checkout is available. Verify the actual push method and resulting HEAD at release instead of assuming credentials exist.

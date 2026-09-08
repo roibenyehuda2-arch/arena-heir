@@ -25,6 +25,9 @@ jobs:
         run: npm test
       - name: Check production JavaScript
         run: |
+          node --check dist/sprite-texture.mjs
+          node --check dist/adventure.js
+          node --check dist/adventure-engine.mjs
           node --check dist/game2d.js
           node --check dist/action-info.mjs
           node --check dist/combat.js
