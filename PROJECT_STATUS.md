@@ -1,5 +1,13 @@
 # Project status — 2026-09-08
 
+## READY for alternating-account handoff
+
+Complete import verified at GitHub main commit 5d67b392be99d7c13568f88663d0f54c5f2fa15a: all 62 tracked blobs matched local SHA values; root tree matched 4953099bb55c222ba37a855757714d0b17e1c704. This documentation completion commit follows that import. Use current GitHub main HEAD for the handoff SHA.
+
+Local main now uses the same GitHub commit objects and origin/main upstream; earlier internal history is safely retained in local archive/pre-github-import. No gameplay files are left uncommitted. Upload used the authenticated GitHub connector, not shell git push. npm test and git diff --check passed again. No new deployment occurred.
+
+NEXT TASK: with the second account connected to this private GitHub repo, clone main and follow AGENTS.md. Resume hero-aware action descriptions and 320/390px reward/shop/save QA when asked to develop. No need to repeat repository setup. The older blocker notes below are historical and do not override this READY section.
+
 ## GitHub import checkpoint
 
 The user created private https://github.com/roibenyehuda2-arch/arena-heir and granted the connector write access. The complete tracked snapshot is being imported via GitHub Git objects with blob/tree hash verification, because shell Git credentials are not configured. The published main commit is the canonical handoff; consult GitHub main for its SHA. Older local history remains preserved locally. No deployment or gameplay changes are part of this import.
