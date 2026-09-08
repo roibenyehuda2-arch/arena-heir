@@ -26,6 +26,8 @@ Both ChatGPT accounts need access to the same GitHub repository. GitHub permissi
 
 ## Architecture and deployment
 
+The user approved GitHub Pages as the new hosting target, with a new URL, on 2026-09-08. `.github/workflows/pages.yml` runs tests on a full checkout and deploys `dist` on pushes to main or manual dispatch. Once Pages is enabled, a push to main also authorizes that configured deployment. Preserve repository privacy; never make the repository public without explicit permission. Pages must be enabled in repository Settings > Pages with Source: GitHub Actions; availability for this private repository depends on the GitHub plan. Verify Actions deployment success before calling the game live. Existing Sites identity and deployment remain untouched. Browser saves belong to an origin and will not automatically transfer to the new Pages URL.
+
 Production entry: dist/game2d.js; deterministic rules: dist/engine.mjs; presentation: dist/combat.js. Preserve saves through explicit migrations. Do not change mechanics merely to pass tests. Keep indexing disabled.
 
 Deploy-only requests: no redesign, review, upgrades or source changes. Deploy the approved synchronized commit to the existing .openai/hosting.json project, following Sites instructions and preserving access settings. If Site access is missing, report it; never create a replacement Site. Editing alone does not authorize deployment.

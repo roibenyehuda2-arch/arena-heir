@@ -1,5 +1,13 @@
 # Project status — 2026-09-08
 
+## GitHub Pages setup checkpoint
+
+User approved publishing through GitHub Pages at a new URL, retaining the old Sites site and the private repository. Added `.github/workflows/pages.yml`: push to main/manual trigger, full game tests on GitHub's complete checkout, production syntax checks, static `dist` upload, and a dependent deployment job using minimal Pages/OIDC permissions. No gameplay changes in this setup.
+
+The connector has no Pages configuration operation; its generic fetch rejects the `/pages` endpoint. Pages enablement and plan eligibility are NOT verified. The repository administrator must select Settings > Pages > Source: GitHub Actions and run the workflow if necessary. Do not claim a live deployment until an Actions deployment succeeds and reports its URL. No repository visibility change or new Sites project is authorized by this setup.
+
+The prior mobile/browser and partial-checkout limitations remain. The complete legacy-asset test must pass in the workflow before deployment. Local partial checkout remains missing seven unchanged legacy binaries; they are retained in the remote tree.
+
 ## Latest development checkpoint — second account
 
 Started from verified GitHub main 91d81b839cc564dd36679efe4d5792a2ea1cce4a after the first account stopped. GitHub remains the only source of truth; no Sites history was merged.

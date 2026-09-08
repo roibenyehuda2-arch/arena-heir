@@ -1,5 +1,13 @@
 # Arena Heir: Crown of Echoes — current handoff
 
+## GitHub Pages publishing
+
+The user approved a new GitHub Pages URL in place of relying on cross-account Sites publishing. The existing Sites deployment is preserved.
+
+One-time setup by a repository administrator: open Settings > Pages, select **GitHub Actions** under Build and deployment > Source, then open Actions > Test and deploy Arena Heir > Run workflow on main. If Pages is unavailable for this private repository, use a supported GitHub plan; do not change repository visibility automatically.
+
+The workflow checks out all assets, runs the complete `npm test` suite and production syntax checks, then uploads only `dist` and deploys after validation succeeds. Future pushes to main repeat this process. No provider token or additional secret is needed. Confirm the successful deployment and its reported URL in Actions before sharing it as live. Existing local browser progress does not automatically transfer between the old Sites origin and the new Pages origin.
+
 Read AGENTS.md, GAME_DESIGN.md and PROJECT_STATUS.md first. Central repository: https://github.com/roibenyehuda2-arch/arena-heir ; branch: main. This GitHub repository is the source of truth. The internal site remote is only a deployment mirror. Use the verified GitHub HEAD reported at handoff.
 
 ## Current installation and validation

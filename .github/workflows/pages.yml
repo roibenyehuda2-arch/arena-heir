@@ -1,0 +1,51 @@
+name: Test and deploy Arena Heir
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      # Tests use Node built-ins and vendored assets; no npm installation needed.
+      - name: Run all game regressions on the complete checkout
+        run: npm test
+      - name: Check production JavaScript
+        run: |
+          node --check dist/game2d.js
+          node --check dist/action-info.mjs
+          node --check dist/combat.js
+          node --check dist/engine.mjs
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload static game only
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy tested game
+        id: deployment
+        uses: actions/deploy-pages@v4
