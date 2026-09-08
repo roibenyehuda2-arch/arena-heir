@@ -2,6 +2,8 @@
 
 ## GitHub Pages publishing
 
+Live illustrated game: https://roibenyehuda2-arch.github.io/arena-heir/ . The user authorized making this repository public and enabled GitHub Actions as the Pages source. Full CI validation and deployment succeeded on 2026-09-08; see PROJECT_STATUS.md for evidence and outstanding mobile QA.
+
 The user approved a new GitHub Pages URL in place of relying on cross-account Sites publishing. The existing Sites deployment is preserved.
 
 One-time setup by a repository administrator: open Settings > Pages, select **GitHub Actions** under Build and deployment > Source, then open Actions > Test and deploy Arena Heir > Run workflow on main. If Pages is unavailable for this private repository, use a supported GitHub plan; do not change repository visibility automatically.
@@ -31,7 +33,7 @@ git diff --check
 
 Production entry: dist/index.html → dist/game2d.js. Rules: dist/engine.mjs. Animation: dist/combat.js. Illustrated styles: dist/storybook.css. Art: dist/assets/art/. Hero sheets are 1536×1024, 3×2 poses (idle, windup, strike, block, hit, down); equipment atlas is 4×3. Runtime assets are checked into Git. Existing third-party licenses remain with their assets.
 
-Browser saves are device-local and not synchronized by GitHub. No accounts/backend/ads/payments. Existing published URL: https://arena-heir.roibenyehuda2.chatgpt.site — older 3D version; illustrated checkpoint is not deployed. Preserve .openai/hosting.json. Publish only on explicit request from an approved synchronized commit, without development in deploy-only mode.
+Browser saves are device-local and not synchronized by GitHub. No accounts/backend/ads/payments. Previous URL: https://arena-heir.roibenyehuda2.chatgpt.site — older 3D version. The illustrated game is live on GitHub Pages above. Preserve .openai/hosting.json. Publish only on explicit request from an approved synchronized commit, without development in deploy-only mode.
 
 ## Historical notes (superseded where different from the documents above)
 

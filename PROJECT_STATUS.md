@@ -1,5 +1,11 @@
 # Project status — 2026-09-08
 
+## Live GitHub Pages deployment — supersedes earlier setup notes
+
+The user explicitly authorized making the repository public and enabled Pages with GitHub Actions. The illustrated game is now deployed at https://roibenyehuda2-arch.github.io/arena-heir/ from commit 27322ebc31deedec8f43311294993be06fb0b70b. Workflow run 34227951288, attempt 2, passed validation and deployment. All npm test suites, including legacy assets on the complete CI checkout, and production syntax checks passed. The live URL returned HTTP 200 and the expected illustrated game HTML entry (game2d.js).
+
+This checkpoint changes documentation only. No new visual/mobile test is claimed; 320/390 browser QA remains pending. Existing Sites hosting is preserved. Browser saves do not automatically transfer to the new origin. Future pushes to main deploy after successful validation. Earlier private-repository and not-deployed statements below are historical.
+
 ## GitHub Pages setup checkpoint
 
 User approved publishing through GitHub Pages at a new URL, retaining the old Sites site and the private repository. Added `.github/workflows/pages.yml`: push to main/manual trigger, full game tests on GitHub's complete checkout, production syntax checks, static `dist` upload, and a dependent deployment job using minimal Pages/OIDC permissions. No gameplay changes in this setup.
