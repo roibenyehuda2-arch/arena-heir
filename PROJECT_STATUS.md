@@ -1,12 +1,12 @@
 # Project status — 2026-09-09
 
-## Wildwoods action slice — release pending
+## Wildwoods action slice — published
 
 Base: `ebbcec1203a798a22cfe53665fb403a9a1203c34`. User approved replacing the card-oriented start/combat with a small real-time dwarf/forest experience and visible purchased equipment. Implemented full-screen world, articulated dwarf, live movement/combos/dodge/slam, two regular enemy types and Thornkeeper, visible axe/armor fitting and purchases, pause/recovery/replay and independent local saves. Previous game preserved at `crownlands.html`.
 
 QA: rule tests cover movement, single-impact timing, dodge, enemy damage, once-only rewards, purchases, malformed saves, replay, defeat persistence and a complete starter-gear trail. Browser inspection covered village and fitting at 320 pixels, 390-pixel layout (no horizontal overflow), 210 → 50 → 10 coin purchases of Emberfang/leather, visual equipment changes, reload retaining Emberfang/coins, and real-time combat building 48/60 power. Cloud-browser extension errors were observed; no application error identified. This is not physical iPhone testing. Temporary QA fixture excluded from production.
 
-All final npm tests, production syntax checks and git diff whitespace checks passed. Deployment is pending below. Next: user feedback on movement/attack feel and equipment progression before expanding the action prototype. Limits: one dwarf, one linear forest, no jumping/parrying, enemies use simple sprite transforms; no claim of proven retention.
+All final npm tests, production syntax checks and git diff whitespace checks passed. Published commit: `40a32002ab54305c6223ba524130629936d56ec9`. Actions run `34316183495` validated and deployed successfully. The public Pages entry was reloaded and verified as Wildwoods, with art loading and the live forge checked. Local main was clean and equal to origin/main after fetching the release. This follow-up documentation commit records the evidence without redeploying. Next: user feedback on movement/attack feel and equipment progression before expanding the action prototype. Limits: one dwarf, one linear forest, no jumping/parrying, enemies use simple sprite transforms; no claim of proven retention.
 
 ---
 
