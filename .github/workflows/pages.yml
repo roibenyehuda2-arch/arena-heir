@@ -25,6 +25,9 @@ jobs:
         run: npm test
       - name: Check production JavaScript
         run: |
+          node --check dist/arena.js
+          node --check dist/arena-engine.mjs
+          node --check dist/arena-art.mjs
           node --check dist/woods.js
           node --check dist/woods-engine.mjs
           node --check dist/woods-art.mjs

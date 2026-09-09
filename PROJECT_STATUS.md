@@ -51,3 +51,15 @@ Original tracked import was verified at `5d67b392be99d7c13568f88663d0f54c5f2fa15
 The original Sites URL https://arena-heir.roibenyehuda2.chatgpt.site is the older 3D version. Project `appgprj_6a9e6739409c81919c47b225588b2280` is inaccessible from this account. Its `.openai/hosting.json` identity remains unchanged; no replacement Site or history merge was made. Browser saves do not automatically transfer between Sites and Pages.
 
 Shell push authentication was historically unavailable; the supported GitHub connector can publish Git objects with a non-forced main update. Public fetch now works and the full checkout is available. Verify the actual push method and resulting HEAD at release instead of assuming credentials exist.
+
+## Stage 1: The First Crown — 2026-09-09
+
+Implementation: three selectable articulated classes; paired opponent selection and free reroll; class/equipment stat comparisons; real-time jumps, melee combos, ranged and magic attacks, timed parries; five-win route and master; permanent Thornkeeper unlock separate from fresh-run equipment and coins. Five shop categories with preview, purchase/equip and reward-free training. Previous forest preserved at wildwoods.html. English interface throughout.
+
+Validation: full npm test passes, including actual six-fight timing-aware engine simulations for dwarf, ranger and mage; damage timing, jump avoidance, frontal projectile parry, magic cost/cooldown, purchases, malformed saves, unique rewards, early-master rejection, training exclusion, master unlock and fresh-run starter gear. Read-only agent audit prompted fixes for reset persistence, overlapping input sources, projectile guard direction and unused opponent names.
+
+Browser QA: Chrome preview at 320/390 iframe widths; fighter selection, opponent reroll and countdown, purchase (500 → 475 test coins), reload retaining equipment, training magic causing damage (125 → 118), pause/retreat and fresh-run confirmation persisting after refresh. No application errors observed; browser extension metadata errors excluded. Physical iPhone/Safari and simultaneous multi-touch not tested. Full six-fight completion verified in engine simulation, not manual browser play.
+
+Known scope: one bounded route, not multiple new realms; Thornkeeper currently reuses recolored dwarf art. Several equipment tiers share silhouettes; mage/ranger armor uses color changes rather than individual new garments. Timing/difficulty and visual progression need player feedback before expansion. Earlier prototype saves intentionally remain separate.
+
+Deployment: release prepared for the existing GitHub Pages workflow on main; verify its terminal result and live entry before reporting published. Sites manifest and inaccessible original Sites identity remain unchanged. Next task: player feedback on combat feel, then distinct equipment visuals and additional realms after approval.

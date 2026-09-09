@@ -1,6 +1,6 @@
-# Arena Heir: Wildwoods
+# Arena Heir: The First Crown
 
-The current entry is a bounded real-time action slice: walk through the forest as Borin, attack and dodge in real time, and buy axes and armor that visibly change the animated character. The previous three-hero turn-based Crownlands adventure remains at `crownlands.html`.
+The current entry is Stage 1: choose a dwarf, ranger or mage, compare opponents, fight in real time, upgrade equipment and unlock Thornkeeper. See the current playable slice below. Earlier Wildwoods and Crownlands prototypes remain at `wildwoods.html` and `crownlands.html`.
 
 ## Source of truth and release
 
@@ -38,7 +38,7 @@ git diff --check
 
 Tests cover Crownlands rules and UI handlers, as well as retained legacy engines, presentation, rigs, 3D and assets. Mock DOM checks and deterministic campaigns do not replace visual browser QA or human playtesting.
 
-## Current action slice
+## Previous Wildwoods action slice
 
 `woods.js` owns Canvas rendering, keyboard/touch input, native pause dialogs and the equipment fitting screen. `woods-engine.mjs` runs fixed 60 Hz updates; `woods-art.mjs` animates separate generated head, torso, arm, leg, axe and armor layers from `assets/crownlands/dwarf-parts.webp`. `woods.css` fills the viewport without a card-based start screen.
 
@@ -73,3 +73,10 @@ Wildwoods is one linear ground-level forest slice with one playable dwarf, not a
 Previous campaign limits:
 
 Twelve encounters use six enemy illustrations: one regular-enemy silhouette per realm and one unique master per realm. Characters have one illustrated pose animated with transforms, projectiles and impact effects; this is not a full authored frame-animation system. Gear changes statistics and its shop/equipment display, not the character's outfit. The campaign is linear and the UI is English. Physical-phone performance and external human enjoyment/retention remain unverified. Browser emulation is not physical-device testing.
+
+## Current playable slice: The First Crown
+
+Entry: `dist/index.html` / `arena.js`; rules: `arena-engine.mjs`; canvas art: `arena-art.mjs`; styling: `arena.css`.
+Choose a class, compare two opponents or reroll, win five arena fights, then defeat and unlock Thornkeeper. Shop previews and a training partner let you test upgrades without spending coins. English UI; touch controls and A/D, Space, J/U/L/K keyboard bindings (help in pause menu).
+
+Validation: `npm test`, `node --check dist/arena.js`, `node --check dist/arena-engine.mjs`, `node --check dist/arena-art.mjs`. Browser QA should cover 320/390 widths, purchase/reload, training, pause/retreat and new-run confirmation. Preserve the older forest at `wildwoods.html` and the previous adventure at `crownlands.html`.

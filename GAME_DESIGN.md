@@ -47,3 +47,15 @@ New saves validate stage consistency, known heroes/Echoes, integer turn/cooldown
 Keep intent, forecast, health and controls readable at narrow widths. Large touch controls, purchase feedback, disabled unaffordable/locked actions, save feedback, optional audio and reduced motion are part of the implementation. Visual targets include 320 and 390 CSS pixels; physical-phone testing is separate.
 
 Three normal-enemy silhouettes are reused within their realms; three masters have unique art. Characters use single-pose transform animation with separate projectile/impact effects. Equipment is statistical and displayed in UI, not modular costume art. No branching story scenes, multiplayer, cloud saves, monetization or proven retention. The linear campaign and balance need human playtesting before claims of enjoyment or addictiveness.
+
+## The First Crown — Stage 1 (2026-09-09)
+
+The approved direction is a structured real-time arena journey, superseding free-roaming Wildwoods. Choose Borin (slow, sturdy dwarf), Rowan (fast ranged ranger), or Aster (fragile, powerful mage). Start with zero gold and tier-zero gear. Shared comparable stats are health, melee, ranged, armor, magic and speed, derived from class plus equipment. Ranger melee upgrades reinforce the bow grip for close strikes; her ranged upgrades improve arrows.
+
+Before each normal fight, choose between two visible opponents with their class, equipment, stats and differences from your own. Reroll free. Five wins lead to Thornkeeper. Defeating him permanently unlocks him for subsequent fresh journeys; his magic slows targets that actually take damage. New journeys reset coins and equipment, retaining unlocks.
+
+Combat uses movement, jumps, three-hit melee chains, ranged attacks, magic energy/cooldown and a short parry window. Enemy wind-ups announce melee, shot or spell. Short victory badges: Untouchable!, Perfect Dodge!, Giant Slayer!, otherwise Victory! Giant Slayer compares actual derived fighting power. No result analytics wall. Health restores between fights; defeat/retreat loses no coins and earns none.
+
+Each class has five shop categories with five tiers (including starter). Preview equipment and test it on a stationary training partner before purchasing. Training never awards coins or unlocks. Master uses a recolored dwarf rig in this bounded slice; distinct master art, richer realm content and unique illustration for every equipment tier remain subsequent work. Current weapon silhouettes share some tiers; armor/boot upgrades use some color treatments. Do not describe the current art as a complete unique item catalog.
+
+New save keys: arena-heir-season-one (run) and arena-heir-unlocks (persistent master unlock). Old saves remain untouched; Wildwoods remains at wildwoods.html and Crownlands at crownlands.html. Saves remain browser-local. Reloading during combat returns to opponent selection, without a partial-fight reward.

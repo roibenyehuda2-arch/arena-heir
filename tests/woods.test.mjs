@@ -19,4 +19,4 @@ s=createGame();for(let i=0;i<10800&&s.hp>0&&!s.finished;i++){const e=s.enemies.f
 s.hp=0;s.weapon=2;const afterDefeat=loadGame(saveGame(s));assert.equal(afterDefeat.hp,100);assert.equal(afterDefeat.x,430);assert.equal(afterDefeat.weapon,2);assert.equal(afterDefeat.gold,190);
 
 import {readFileSync,existsSync} from 'node:fs';
-const entry=readFileSync(new URL('../dist/index.html',import.meta.url),'utf8');assert.match(entry,/woods.js/);assert.match(entry,/woods.css/);assert.equal(existsSync(new URL('../dist/_woods-qa.html',import.meta.url)),false);const parts=readFileSync(new URL('../dist/assets/crownlands/dwarf-parts.webp',import.meta.url));assert.equal(parts.toString('ascii',8,12),'WEBP');
+const entry=readFileSync(new URL('../dist/wildwoods.html',import.meta.url),'utf8');assert.match(entry,/woods.js/);assert.match(entry,/woods.css/);assert.equal(existsSync(new URL('../dist/_woods-qa.html',import.meta.url)),false);const parts=readFileSync(new URL('../dist/assets/crownlands/dwarf-parts.webp',import.meta.url));assert.equal(parts.toString('ascii',8,12),'WEBP');

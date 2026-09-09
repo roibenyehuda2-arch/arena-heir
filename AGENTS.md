@@ -37,3 +37,7 @@ Deploy-only requests authorize deployment of the approved synchronized version, 
 ## Wildwoods action prototype (2026-09-09)
 
 Current entry is `dist/index.html` → `woods.js`, with deterministic fixed-step combat in `woods-engine.mjs`, modular sprite rendering in `woods-art.mjs`, and `woods.css`. User rejected card-style combat and approved a bounded real-time dwarf/forest/visible-gear slice before expanding the full game. Keep the previous adventure reachable at `crownlands.html`; do not erase its saves. New saves use `arena-heir-wildwoods-v1`. This is a first action slice, not a completed multi-realm conversion.
+
+## Current Stage 1 entry (2026-09-09)
+
+Production now uses `dist/index.html` → `arena.js`, `arena-engine.mjs`, `arena-art.mjs` and `arena.css`. Read the latest Stage 1 section of GAME_DESIGN.md. Five ordinary wins plus Thornkeeper; three starter classes and one persistent master unlock. Preserve `wildwoods.html` and `crownlands.html` and all older save keys. `npm test` includes the new six-fight simulations for all three classes. New runtime art uses `class-parts.webp` plus existing modular dwarf art. Do not promise unique art per item tier yet.
