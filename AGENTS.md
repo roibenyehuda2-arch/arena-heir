@@ -28,8 +28,12 @@ Both ChatGPT accounts need access to the same GitHub repository. GitHub permissi
 
 The user authorized the repository becoming public and GitHub Pages publishing on 2026-09-08. Existing target: https://roibenyehuda2-arch.github.io/arena-heir/ . Pages uses GitHub Actions. `.github/workflows/pages.yml` validates the full checkout and deploys `dist` on main pushes or manual dispatch. A requested development release to main includes that configured deployment. Verify Actions success and the live entry before calling a release published. Do not change visibility or hosting targets implicitly.
 
-Current production entry: `dist/index.html` → `dist/adventure.js`; deterministic rules: `dist/adventure-engine.mjs`; styles: `dist/adventure.css`; enemy texture compositor: `dist/sprite-texture.mjs`; art: `dist/assets/crownlands/`. Legacy `game2d.js`, `engine.mjs`, `combat.js`, 3D code and their tests remain for compatibility/history and are not the production entry. Do not apply legacy seven-fight or positional rules to Crownlands. Preserve saves through explicit migrations and keep indexing disabled.
+Previous Crownlands entry: `dist/crownlands.html` → `dist/adventure.js`; deterministic rules: `dist/adventure-engine.mjs`; styles: `dist/adventure.css`; enemy texture compositor: `dist/sprite-texture.mjs`; art: `dist/assets/crownlands/`. Legacy `game2d.js`, `engine.mjs`, `combat.js`, 3D code and their tests remain for compatibility/history and are not the production entry. Do not apply legacy seven-fight or positional rules to Crownlands. Preserve saves through explicit migrations and keep indexing disabled.
 
 Preserve `.openai/hosting.json` and its existing Sites identity. The old Sites project is inaccessible from this account; do not create a replacement Site or merge its old history. GitHub Pages is the authorized publishing path. Browser saves belong to an origin and do not automatically transfer from Sites to Pages or between devices/accounts.
 
 Deploy-only requests authorize deployment of the approved synchronized version, not redesign or unrelated changes. Follow Sites skills when handling its manifest or hosting, while respecting the user's approved GitHub Pages target.
+
+## Wildwoods action prototype (2026-09-09)
+
+Current entry is `dist/index.html` → `woods.js`, with deterministic fixed-step combat in `woods-engine.mjs`, modular sprite rendering in `woods-art.mjs`, and `woods.css`. User rejected card-style combat and approved a bounded real-time dwarf/forest/visible-gear slice before expanding the full game. Keep the previous adventure reachable at `crownlands.html`; do not erase its saves. New saves use `arena-heir-wildwoods-v1`. This is a first action slice, not a completed multi-realm conversion.

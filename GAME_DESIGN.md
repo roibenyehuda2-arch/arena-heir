@@ -1,4 +1,16 @@
-# Crownlands — current game design
+# Wildwoods — current approved action direction
+
+The user rejected card-based starts and turn-based action selection, and approved a small real-time dwarf/forest slice with visible equipment progression. Start directly in the village. The dwarf begins in simple work clothes with a worn axe. All axes and torso upgrades are previewed on the articulated character and remain visible in combat.
+
+Current slice: horizontal movement, three-hit attack combo, dodge with invulnerability and timing reward, 60-power ground slam, five regular enemies (guard/wisp) and a final Thornkeeper. Enemy windups are visible; third combo hits and slams stagger, ordinary hits do not. Coins are granted once per foe (25 normal, 65 master), with small victory healing. A timing-aware starter-gear simulation completes the trail. Gear prices: Ironheart 60, Emberfang 160, leather 40, steel 110. Higher tiers replace lower tiers; trying items never spends money.
+
+Art uses one modular 4×3 generated atlas for the dwarf and equipment. Separate arms/legs/weapon animate, helmet appears with steel armor. Existing forest/enemy art is reused. This is a first playable slice to evaluate before expanding heroes, lands, animation and content. Preserve the previous game at `crownlands.html` and its save keys.
+
+Save key `arena-heir-wildwoods-v1` is independent of the old journey. Purchases and defeat rewards save immediately, progress periodically and on exit; a saved defeat resumes healed in the village with equipment and coins intact. Pause on loss of focus prevents unattended combat.
+
+---
+
+# Crownlands — retained previous design
 
 ## Approved direction
 
