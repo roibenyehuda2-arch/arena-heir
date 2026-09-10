@@ -1,4 +1,4 @@
-import {heldItem} from './market-art.mjs';
+import {heldItem} from './market-art.mjs?v=market-2';
 import {keyBackground} from './sprite-texture.mjs';
 import {WEAPONS,ARMORS} from './woods-engine.mjs';
 export async function loadArt(){
@@ -7,7 +7,7 @@ export async function loadArt(){
  function slice(im,cols,rows){const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(im,0,0);const p=ctx.getImageData(0,0,c.width,c.height);keyBackground(p.data,c.width,c.height,cols,rows);ctx.putImageData(p,0,0);return Array.from({length:cols*rows},(_,i)=>{const w=Math.floor(c.width/cols),h=Math.floor(c.height/rows),x=i%cols*w,y=Math.floor(i/cols)*h;let l=w,t=h,r=0,b=0;for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++)if(p.data[((y+yy)*c.width+x+xx)*4+3]>100){l=Math.min(l,xx);r=Math.max(r,xx);t=Math.min(t,yy);b=Math.max(b,yy);}const out=document.createElement('canvas');out.width=Math.max(1,r-l+1);out.height=Math.max(1,b-t+1);out.getContext('2d').drawImage(c,x+l,y+t,out.width,out.height,0,0,out.width,out.height);return out;});}
  return {parts:slice(parts,4,3),foes:slice(foes,3,2),forest};
 }
-export function drawDwarf(ctx,art,x,y,{time=0,walk=0,moving=false,face=1,weapon=0,armor=0,boots=0,attack=null,dodge=0,hurt=0,scale=1,marketGear=null}={}){
+export function drawDwarf(ctx,art,x,y,{time=0,walk=0,moving=false,face=1,weapon=0,armor=0,boots=0,attack=null,dodge=0,hurt=0,scale=1,marketGear=null,fitting=false}={}){
  ctx.save();ctx.translate(x,y);ctx.scale(face*scale,scale);
  const bob=moving?Math.abs(Math.sin(walk))*4:Math.sin(time*2.4)*2;
  const gait=moving?Math.sin(walk)*.42:0;
@@ -25,7 +25,7 @@ export function drawDwarf(ctx,art,x,y,{time=0,walk=0,moving=false,face=1,weapon=
  part(0,-65,-244,130,141);
  if(armor&&!marketGear?.armor)part(armor===1?9:10,19,-158,55,48);
  if(armor===2&&!marketGear?.armor)part(11,-62,-254,122,94);
- ctx.save();ctx.translate(34,-139);ctx.rotate(armAngle);ctx.translate(4,60);ctx.rotate(.40);if(marketGear?.weapon)heldItem(ctx,marketGear.weapon,marketGear.weaponTier);else part(WEAPONS[weapon].part,-36,-124,80,155);ctx.restore();
+ ctx.save();ctx.translate(fitting?100:34,fitting?-70:-139);ctx.rotate(fitting?.12:armAngle);if(!fitting){ctx.translate(4,60);ctx.rotate(.40);}if(marketGear?.weapon)heldItem(ctx,marketGear.weapon,marketGear.weaponTier,fitting);else part(WEAPONS[weapon].part,-36,-124,80,155);ctx.restore();
  ctx.restore();
 }
 export function drawItem(ctx,art,slot,tier,w,h){ctx.clearRect(0,0,w,h);const im=art.parts[(slot==='weapon'?WEAPONS:ARMORS)[tier].part];const s=Math.min((w-12)/im.width,(h-12)/im.height);ctx.drawImage(im,(w-im.width*s)/2,(h-im.height*s)/2,im.width*s,im.height*s);}
