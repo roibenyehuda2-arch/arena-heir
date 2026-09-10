@@ -25,6 +25,8 @@ jobs:
         run: npm test
       - name: Check production JavaScript
         run: |
+          node --check dist/duel.js
+          node --check dist/duel-engine.mjs
           node --check dist/arena.js
           node --check dist/arena-engine.mjs
           node --check dist/arena-art.mjs

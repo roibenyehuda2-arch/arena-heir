@@ -41,3 +41,7 @@ Current entry is `dist/index.html` → `woods.js`, with deterministic fixed-step
 ## Current Stage 1 entry (2026-09-09)
 
 Production now uses `dist/index.html` → `arena.js`, `arena-engine.mjs`, `arena-art.mjs` and `arena.css`. Read the latest Stage 1 section of GAME_DESIGN.md. Five ordinary wins plus Thornkeeper; three starter classes and one persistent master unlock. Preserve `wildwoods.html` and `crownlands.html` and all older save keys. `npm test` includes the new six-fight simulations for all three classes. New runtime art uses `class-parts.webp` plus existing modular dwarf art. Do not promise unique art per item tier yet.
+
+## Current turn-based entry (2026-09-10)
+
+Production now uses `dist/duel.js`, `dist/duel-engine.mjs` and `dist/duel.css`. Read the latest Crownfall design/status sections, which supersede the real-time Stage 1 rules. One action per turn; ordinary duels cost gold on defeat; optional level-3 tournament ends the run on defeat. New saves use `arena-heir-duels-v1`; preserve all earlier keys and `arena-heir-unlocks`. Prior real-time entry is `realtime.html`. New rules and mock-DOM UI tests are in the npm test chain. Keep GitHub Pages publishing and existing Sites identity as described above.

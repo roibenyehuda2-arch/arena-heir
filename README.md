@@ -80,3 +80,9 @@ Entry: `dist/index.html` / `arena.js`; rules: `arena-engine.mjs`; canvas art: `a
 Choose a class, compare two opponents or reroll, win five arena fights, then defeat and unlock Thornkeeper. Shop previews and a training partner let you test upgrades without spending coins. English UI; touch controls and A/D, Space, J/U/L/K keyboard bindings (help in pause menu).
 
 Validation: `npm test`, `node --check dist/arena.js`, `node --check dist/arena-engine.mjs`, `node --check dist/arena-art.mjs`. Browser QA should cover 320/390 widths, purchase/reload, training, pause/retreat and new-run confirmation. Preserve the older forest at `wildwoods.html` and the previous adventure at `crownlands.html`.
+
+## Current release: Turn-based Crownfall
+
+Open `dist/index.html`: illustrated town, one-rival duels, one action per turn and class-specific shops. Every victory grants gold, a level and three attribute points. Enter the optional First Crown tournament from level 3; only tournament defeat ends a journey. Win its master to unlock higher equipment and Thornkeeper for a fresh run. Dwarf begins with an axe, and must buy ranged attacks and spells. The previous real-time prototype remains at `realtime.html`.
+
+Validation: `npm test`, `node --check dist/duel.js`, `node --check dist/duel-engine.mjs`, `git diff --check`. New tests include all-class tournament simulations and mock-DOM UI handlers; these do not replace manual browser/mobile playtesting. Saves remain in this browser; older prototype saves are retained under their original keys.
