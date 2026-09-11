@@ -33,7 +33,8 @@ for(const kind of ['dwarf','ranger','mage']){
  const taunt=E.actions(b,'p').find(a=>a.id==='taunt');assert(taunt&&!taunt.disabled,'a taunt is available at range');
  b.p.energy=40;assert(E.act(b,'taunt','p'));
  assert(b.crowd>E.CROWD_START,'a taunt wakes the crowd');
- assert.equal(b.p.energy,50,'a taunt costs nothing and recovers energy');
+ assert.equal(b.p.energy,44,'showboating recovers only a little energy');
+ assert.equal(b.p.exposed,1,'showboating leaves the fighter open to punishment');
  assert.equal(b.e.rattled,1,'a taunt rattles the rival');
  assert.equal(b.turn,'e','a taunt still costs the turn');
  assert(E.act(b,E.ai(b),'e'));assert.equal(b.e.rattled,0,'rattle clears once the rival acts');
@@ -104,6 +105,30 @@ for(const kind of ['dwarf','ranger','mage']){
  const weak=E.newRun('dwarf'),strong=E.newRun('dwarf');strong.gear.melee=7;const o=E.nextRival(weak,1);
  assert(E.hitsToDefeat(weak,o)>=1);
  assert(E.hitsToDefeat(strong,o)<E.hitsToDefeat(weak,o),'a better weapon needs fewer clean blows');
+}
+// The expanded arena supports large repositioning while preserving old saves and deterministic bounds.
+{
+ const r=setup(),b=r.battle;assert.equal(E.ARENA_MAX,30);assert.equal(b.p.x,5);assert.equal(b.e.x,25);
+ const before=b.p.x;assert(E.act(b,'charge'));assert(b.p.x>before,'charge crosses a large part of the arena');assert(b.p.x<b.e.x,'charge never crosses the rival');
+ const saved=JSON.parse(JSON.stringify(r));saved.battle.p.x=E.ARENA_MAX;assert.equal(E.load(JSON.stringify(saved)).battle.p.x,E.ARENA_MAX,'new arena edge survives a save');
+}
+{
+ const slow=setup(),fast=E.newRun('dwarf');fast.gear.boots=7;E.offer(fast);E.startFight(fast);const slowStart=slow.battle.p.x,fastStart=fast.battle.p.x;E.act(slow.battle,'jump');E.act(fast.battle,'jump');assert(fast.battle.p.x-fastStart>slow.battle.p.x-slowStart,'late boots create visibly larger jumps');
+}
+// Rest creates an opening, and shove breaks guard and produces immutable hit metadata.
+{
+ const r=setup(),b=r.battle;b.p.x=10;b.e.x=11;const ordinary=E.actions(b,'e').find(a=>a.id==='normal').chance;b.turn='p';assert(E.act(b,'rest'));assert.equal(b.p.exposed,1);assert(E.actions(b,'e').find(a=>a.id==='normal').chance>ordinary,'an exposed target is easier to hit');
+}
+{
+ let checked=false;
+ for(let seed=1;seed<100&&!checked;seed++){const r=setup(),b=r.battle;b.p.x=10;b.e.x=11;b.e.guard=true;b.seed=seed;E.act(b,'shove');const hit=b.events.find(e=>e.type==='hit');if(hit){assert(hit.blocked,'the event remembers guard after state mutation');assert(hit.knockback>=3);assert(b.e.x>11,'shove moves the rival');assert.equal(b.e.guard,false);checked=true;}}
+ assert(checked,'a deterministic shove hit can be produced');
+}
+// Misses are explicit renderer events and a failed heavy leaves its attacker exposed.
+{
+ let checked=false;
+ for(let seed=1;seed<10000&&!checked;seed++){const r=setup(),b=r.battle;b.p.x=10;b.e.x=11;b.seed=seed;E.act(b,'heavy');if(b.events.some(e=>e.type==='miss')){assert.equal(b.p.exposed,1);checked=true;}}
+ assert(checked,'a deterministic heavy miss can be produced');
 }
 console.log('Crowd, taunts, criticals, named rivals, styles and legacy saves: passed');
 console.log('Turn-based rules: passed');

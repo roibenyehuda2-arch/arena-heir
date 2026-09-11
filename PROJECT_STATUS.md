@@ -1,5 +1,23 @@
 # Project status — 2026-09-11
 
+## Colosseum combat — ready for publication
+
+Combat was rebuilt around the user's direct feedback. The forest wallpaper and bottom action dock are gone from live duels. Fights now use the illustrated Ember colosseum with stands, walls, banners, a broad sand floor, a 30-space logical arena, dynamic close/far camera, crowd motion and dust. Fighters stay large while later boots produce longer logical jumps and visibly higher arcs.
+
+Controls are accessible circular HTML buttons projected beside the player. At range they show Advance, Jump, Charge, Showboat, Guard and Rest; in melee they switch to Quick, Strike, Heavy, Shove, Guard and Retreat, with ranged and magic techniques in a separate nearby cluster. Energy, hit chance, disabled reason and full descriptions remain available to touch, pointer, keyboard and screen readers. The old opaque bottom strip no longer reserves or covers arena space.
+
+Charge and Shove add the missing positional drama. Charge crosses a large distance, attacks on arrival, nudges the rival and can break Guard; Shove trades damage for strong knockback and guard break. Heavy now breaks Guard, knocks back and creates an exposed punish window on a miss. Rest and Showboat also expose the player, while Guard has a cooldown. Explicit miss/block/Aegis/knockback events now drive the correct sound and effects; recoil, dust, critical shake and a persistent two-line turn recap prevent the player's action from disappearing under the immediate AI reply.
+
+Save compatibility is unchanged: `arena-heir-duels-v1`, version 1. Old 0–18 positions remain valid within 0–30; missing `exposed` and recap fields normalize on load. Automated coverage now includes expanded bounds, long Charge movement without crossing, late-boot jump growth, exposure accuracy, Shove guard break/knockback, miss events, Heavy exposure, contextual control markup and absence of the bottom dock. The complete npm chain passes, including all three level-9 Crown completions, market/fitting tests, retained prototypes and legacy saves. All seventeen production syntax checks and whitespace checks pass.
+
+Cloud Chrome visual QA covered desktop 1365×936, phone 390×660 and narrow 320×568 views, including far and melee control clusters. The inspection corrected button-on-fighter, HUD/crowd/recap and narrow-screen clipping regressions. There was no horizontal action clipping in the final frames and no application console error observed. These are browser dimensions, not a physical iPhone or Safari performance test.
+
+Publication has not yet been recorded in this entry. Target remains the authorized GitHub Pages workflow on `main`; the preserved Sites identity is untouched.
+
+---
+
+# Project status — 2026-09-11
+
 ## The roaring arena — deployed; live page not independently verified this session
 
 Duels were arithmetic: damage was computed before the click and printed on the button, the only randomness was one hit roll, and three rival names cycled forever. Research into why Swords and Sandals 2 held players identified four load-bearing hooks. Two already existed here and were left alone — three staggered unlock clocks, and legible odds on every action. Two were missing and are now built.

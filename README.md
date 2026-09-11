@@ -93,10 +93,18 @@ Expanded market: seven purchasable tiers per equipment slot, with Ember/Tide/Sto
 
 ## The roaring arena
 
-Duels now play to a crowd. A meter starts bored and rises with taunts, critical blows, heavy strikes and spells; resting and retreating bore it again. Above 25 the crowd adds a bonus purse worth up to half the base reward, so showmanship is a real trade against finishing quickly. Taunting costs no energy, recovers some, cannot be used within melee reach, and rattles the rival's next attack.
+Duels now play to a crowd. A meter starts bored and rises with showboating, critical blows, heavy strikes and spells; resting and retreating bore it again. Above 25 the crowd adds a bonus purse worth up to half the base reward, so showmanship is a real trade against finishing quickly. Showboating recovers four energy, cannot be used within melee reach, rattles the rival's next attack, leaves the performer exposed and holds a three-turn cooldown.
 
 Rivals are a named gallery of twelve with epithets, spoken lines and six distinct fighting styles that each use their own decision ladder. Wins against a rival are remembered and shown in town and before a rematch. Shops report how a previewed item changes the fight you are about to have, in clean blows against the rival warming up in the arena.
 
 The committed CC0 combat audio is wired in, with crowd ambience that swells with the meter and a Sound toggle in the menu. Saves are untouched: the key stays `arena-heir-duels-v1` at version 1, and the new crowd, rattle and rivalry fields are optional and normalized on load.
 
 `npm test` now also covers crowd scoring, taunt legality and cooldown, critical blows, the named ladder, per-style AI, rivalry persistence, malformed rivalry records, and resuming a save written before this release.
+
+## Colosseum combat
+
+The live duel now uses the existing illustrated Ember arena instead of a forest backdrop. A 30-space floor, dynamic close/far camera, larger fighters, crowd motion, dust, recoil, knockback and explicit miss/block/critical feedback make distance and impact visible. Late boots increase both logical and on-screen jump size.
+
+The full-width bottom dock is gone. Accessible circular HTML controls orbit the player and change with range: far combat exposes movement, Charge, Showboat, Guard and Rest; melee exposes Quick, Strike, Heavy, Shove, Guard and Retreat. Ranged attacks and learned spells remain in a separate nearby technique cluster. Active buttons expose energy, accuracy and full descriptions to touch, keyboard and screen readers; unavailable buttons show their reason directly.
+
+Charge is a large risky gap closer that can break guard; Shove is a low-damage guard break with strong knockback; Heavy also breaks guard, knocks back and leaves its user exposed on a miss. Rest and Showboat now create a real punish window. The fight HUD preserves the player's last result alongside the rival reply instead of immediately overwriting it. Save key and version remain `arena-heir-duels-v1` / 1; old 18-space in-progress saves load naturally inside the expanded bounds.
