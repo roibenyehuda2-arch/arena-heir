@@ -1,6 +1,6 @@
 # Project status — 2026-09-11
 
-## Aspirational market loop — release candidate
+## Aspirational market loop — published and verified
 
 Based on a direct review of the Swords & Sandals 2 city/shop loop, the current illustrated market now connects browsing, duels and returning to town. Players can track any unowned item or spell; town, rival and result screens show exact gold, Crown, level and attribute gaps, and the goal button routes to the correct merchant/tab/item. Without a tracked choice, the city recommends the nearest purchase. Buying a goal clears it and selects the next unowned tier.
 
@@ -10,7 +10,7 @@ Visual changes increase the desktop town fighter to approximately merchant size 
 
 QA completed before publication: the full npm regression chain passed, including all three Crownfall classes, prior prototypes, 63 legacy reward cases, assets, saves and 96 fitting geometry cases. New checks cover goal suggestion/persistence, malformed-goal migration, exact Crown/level/attribute gaps, incremental pricing, cumulative bonuses, post-purchase clearing, direct goal routing and advanced rival gear. Live Chrome review covered desktop town/weapons, the 390×660 town plus Weaponsmith/Arcane Shop/Armory, Armor/Boots/Melee/Ranged/Spells, and a 320×568 narrow layout. No horizontal overflow or game error was observed; 320px short screens scroll vertically as intended. This is browser dimension testing, not a physical iPhone/Safari test.
 
-Deployment: pending the authorized GitHub `main` / Pages release. The previous Sites identity remains unchanged. Next: human play feedback on the revised purchase cadence and long-run balance; additional city services or later tournaments should be a separate expansion rather than blocking this focused market release.
+Verified publication: release `9bb4e5a63090b5ae9c1ec838a671191ef3b6c68c` was published to `main` through the authorized GitHub Pages workflow. The live Pages entry exposed the new `market-goals-1` build, and `index.html`, `duel.js`, `duel.css`, `duel-engine.mjs` and `equipment-catalog.mjs` matched the release checkout byte-for-byte. Local `main` was clean and synchronized to `origin/main` before this documentation-only `[skip ci]` handoff. The previous Sites identity remains unchanged. Next: human play feedback on the revised purchase cadence and long-run balance; additional city services or later tournaments should be a separate expansion rather than blocking this focused market release.
 
 ---
 
