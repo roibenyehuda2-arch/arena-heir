@@ -1,4 +1,4 @@
-import {heldItem} from './market-art.mjs?v=phone-5';
+import {heldItem} from './market-art.mjs?v=roaring-arena-1';
 import {keyBackground} from './sprite-texture.mjs';
 import {WEAPONS,ARMORS} from './woods-engine.mjs';
 export async function loadArt(){
