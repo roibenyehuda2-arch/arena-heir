@@ -90,3 +90,13 @@ Validation: `npm test`, `node --check dist/duel.js`, `node --check dist/duel-eng
 The current market uses `market-art.mjs` with original merchant, interior, equipment and spell atlases. Browse visual tier shelves, preview items on your fighter, and set any future item as a persistent goal. Town, rival and result screens show the exact remaining gold, level, Crown and attribute requirements. Equipment upgrades charge only the difference from the equipped tier; advanced bonuses accumulate, so buying early and upgrading never discards an earlier perk. `npm test` includes market goals, pricing, unlock and save checks; `node --check dist/market-art.mjs` is part of release validation. Earlier prototypes retain their original renderer behavior unless passed the new market costume option.
 
 Expanded market: seven purchasable tiers per equipment slot, with Ember/Tide/Storm/Dragon sets and staged Crown, level and class-relevant attribute gates. `equipment-catalog.mjs` holds stable IDs, names and cumulative passive bonuses. Mobile shops use a swipe shelf with fitting/purchase visible together; short-height phones scroll. The test chain covers goal persistence, incremental upgrade pricing, new gear save compatibility and 96 fitting geometry cases.
+
+## The roaring arena
+
+Duels now play to a crowd. A meter starts bored and rises with taunts, critical blows, heavy strikes and spells; resting and retreating bore it again. Above 25 the crowd adds a bonus purse worth up to half the base reward, so showmanship is a real trade against finishing quickly. Taunting costs no energy, recovers some, cannot be used within melee reach, and rattles the rival's next attack.
+
+Rivals are a named gallery of twelve with epithets, spoken lines and six distinct fighting styles that each use their own decision ladder. Wins against a rival are remembered and shown in town and before a rematch. Shops report how a previewed item changes the fight you are about to have, in clean blows against the rival warming up in the arena.
+
+The committed CC0 combat audio is wired in, with crowd ambience that swells with the meter and a Sound toggle in the menu. Saves are untouched: the key stays `arena-heir-duels-v1` at version 1, and the new crowd, rattle and rivalry fields are optional and normalized on load.
+
+`npm test` now also covers crowd scoring, taunt legality and cooldown, critical blows, the named ladder, per-style AI, rivalry persistence, malformed rivalry records, and resuming a save written before this release.
