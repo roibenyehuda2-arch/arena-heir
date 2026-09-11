@@ -85,3 +85,8 @@ The equipment catalog now has seven purchasable tiers in each of four slots: 28 
 Phone layout takes priority: fitting scene, category tabs, a horizontally swipeable shelf and the purchase panel share the viewport. Short-height phones use page scrolling instead of clipping. Desktop uses a four-column stock grid beside the fitting room. The next unowned item is previewed automatically. The merchant remains present at smaller scale while the player's fitting occupies the center. World character size is reduced by roughly 20% from the previous market release.
 
 Fitting uses a dedicated outward weapon pose, with aspect-preserving size limits, keeping equipment to the right of the body rather than across the face. The same catalog icons have their own large stock/selection previews. The new variable-row atlas is sliced with explicit row bands. Combat action rules and the five existing spells are not redesigned in this iteration; new equipment benefits feed the existing shared stats.
+
+
+## Mobile layout correction — 2026-09-11
+
+Phone stock uses fixed-width horizontal cards, preserving its scroll position when selecting an item. Town building artwork must keep its natural proportions; mobile town navigation sits below the scene in a two-column group. Shopkeeper name tags replace longer dialogue on narrow screens so the merchant stays visible. Desktop retains dialogue and a four-column shelf. Very short screens may scroll vertically rather than clipping purchase controls.
