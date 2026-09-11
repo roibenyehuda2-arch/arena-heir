@@ -90,3 +90,13 @@ Fitting uses a dedicated outward weapon pose, with aspect-preserving size limits
 ## Mobile layout correction — 2026-09-11
 
 Phone stock uses fixed-width horizontal cards, preserving its scroll position when selecting an item. Town building artwork must keep its natural proportions; mobile town navigation sits below the scene in a two-column group. Shopkeeper name tags replace longer dialogue on narrow screens so the merchant stays visible. Desktop retains dialogue and a four-column shelf. Very short screens may scroll vertically rather than clipping purchase controls.
+
+## Aspirational market loop — 2026-09-11
+
+The city now carries one explicit purchase objective between visits. A player may set any unowned equipment piece or spell as the goal, including locked prestige stock. When no goal is selected, the city recommends the closest useful purchase, prioritizing unlocked items and the hero's melee weapon. Town, rival and result views show the same objective. Its progress is derived from live catalog data rather than stored prices: remaining gold, First Crown, level and relevant attribute requirements are shown independently. Entering from the goal opens the correct merchant, category and exact item. Fulfilling the goal clears it and automatically previews the next unowned item.
+
+Equipment prices are total slot values, but an upgrade charges only the difference between the equipped tier and the target tier. Buying Ironbark before Moonsteel therefore costs the same total as saving and buying Moonsteel directly; early purchases are never punished. Advanced equipment perks are cumulative through the equipped tier, so Tide retains Ember's spell-power benefit and later tiers never silently remove earlier milestone bonuses.
+
+The ladder is deliberately staggered: Ironbark is open immediately; Moonsteel requires the First Crown and level 6; Royal level 7; Ember level 9; Tide level 11; Storm level 13; Dragon level 15. Ember and later equipment also require a class-relevant attribute: dwarf weapons use Strength, ranger weapons use Speed, mage weapons use Magic, armor uses Defense and boots use Speed. Required values are 8/10/12/14 for Ember/Tide/Storm/Dragon. Ordinary post-Crown rivals increasingly display these higher tiers so the arena advertises future city goals.
+
+Desktop ownership hierarchy is intentional: the town fighter is approximately merchant-sized, and the fitting-room fighter is larger than the keeper. Phone proportions remain width-constrained, with 390px layouts keeping all shop actions visible and 320px short screens scrolling vertically rather than clipping them.

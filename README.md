@@ -1,6 +1,6 @@
 # Arena Heir: The First Crown
 
-The current entry is Stage 1: choose a dwarf, ranger or mage, compare opponents, fight in real time, upgrade equipment and unlock Thornkeeper. See the current playable slice below. Earlier Wildwoods and Crownlands prototypes remain at `wildwoods.html` and `crownlands.html`.
+The current entry is turn-based Crownfall: choose a dwarf, ranger or mage, explore the illustrated town, pursue visible shop goals, compare opponents, upgrade equipment and unlock Thornkeeper. Earlier real-time, Wildwoods and Crownlands prototypes remain available at `realtime.html`, `wildwoods.html` and `crownlands.html`.
 
 ## Source of truth and release
 
@@ -87,6 +87,6 @@ Open `dist/index.html`: illustrated town, one-rival duels, one action per turn a
 
 Validation: `npm test`, `node --check dist/duel.js`, `node --check dist/duel-engine.mjs`, `git diff --check`. New tests include all-class tournament simulations and mock-DOM UI handlers; these do not replace manual browser/mobile playtesting. Saves remain in this browser; older prototype saves are retained under their original keys.
 
-The current market uses `market-art.mjs` with original merchant, interior, equipment and spell atlases. Browse visual tier shelves, preview items on your fighter, and purchase with the existing gold/crown rules. `npm test` includes the market handler checks; `node --check dist/market-art.mjs` is part of release validation. Earlier prototypes retain their original renderer behavior unless passed the new market costume option.
+The current market uses `market-art.mjs` with original merchant, interior, equipment and spell atlases. Browse visual tier shelves, preview items on your fighter, and set any future item as a persistent goal. Town, rival and result screens show the exact remaining gold, level, Crown and attribute requirements. Equipment upgrades charge only the difference from the equipped tier; advanced bonuses accumulate, so buying early and upgrading never discards an earlier perk. `npm test` includes market goals, pricing, unlock and save checks; `node --check dist/market-art.mjs` is part of release validation. Earlier prototypes retain their original renderer behavior unless passed the new market costume option.
 
-Expanded market: seven purchasable tiers per equipment slot, with Ember/Tide/Storm/Dragon sets and crown/level gates. `equipment-catalog.mjs` holds stable IDs, names and passive bonuses. Mobile shops use a swipe shelf with fitting/purchase visible together; short-height phones scroll. The test chain covers new gear save compatibility and 96 fitting geometry cases, which are not manual browser QA.
+Expanded market: seven purchasable tiers per equipment slot, with Ember/Tide/Storm/Dragon sets and staged Crown, level and class-relevant attribute gates. `equipment-catalog.mjs` holds stable IDs, names and cumulative passive bonuses. Mobile shops use a swipe shelf with fitting/purchase visible together; short-height phones scroll. The test chain covers goal persistence, incremental upgrade pricing, new gear save compatibility and 96 fitting geometry cases.

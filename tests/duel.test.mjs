@@ -12,11 +12,14 @@ const setup=()=>{const r=E.newRun('dwarf');E.offer(r);E.startFight(r);return r;}
  const r=setup();r.gold=10;E.surrender(r,{});assert.equal(r.gold,0);assert.equal(r.dead,false);assert.equal(r.level,1);assert.equal(E.settle(r,{}),false);
 }
 {
- const r=E.newRun('dwarf'),m={};assert.equal(E.enterTournament(r),false);r.level=3;r.points=3;assert.equal(E.enterTournament(r),false);for(let i=0;i<3;i++)assert(E.allocate(r,'strength'));assert(E.enterTournament(r));assert.equal(E.buy(r,'magic','sleep'),false);for(let i=0;i<3;i++){assert(E.startFight(r));r.battle.outcome='win';E.settle(r,m);while(r.points)E.allocate(r,'vitality');}assert(r.crown);assert(m.thorn);assert.equal(r.gold,430);const fresh=E.newRun('thorn',m);assert.equal(fresh.level,1);assert.equal(fresh.gear.melee,0);assert.equal(fresh.gold,0);assert(E.buy(r,'magic','meteor'));assert.equal(E.shop(r,'weapons').find(i=>i.tier===3).locked,false);
+ const r=E.newRun('dwarf'),m={};assert.equal(E.enterTournament(r),false);r.level=3;r.points=3;assert.equal(E.enterTournament(r),false);for(let i=0;i<3;i++)assert(E.allocate(r,'strength'));assert(E.enterTournament(r));assert.equal(E.buy(r,'magic','sleep'),false);for(let i=0;i<3;i++){assert(E.startFight(r));r.battle.outcome='win';E.settle(r,m);while(r.points)E.allocate(r,'vitality');}assert(r.crown);assert(m.thorn);assert.equal(r.gold,430);const fresh=E.newRun('thorn',m);assert.equal(fresh.level,1);assert.equal(fresh.gear.melee,0);assert.equal(fresh.gold,0);assert(E.buy(r,'magic','meteor'));assert.equal(E.shop(r,'weapons').find(i=>i.tier===2).locked,false);assert.equal(E.shop(r,'weapons').find(i=>i.tier===3).locked,true);
  const doomed=E.newRun('ranger');doomed.level=3;E.enterTournament(doomed);E.startFight(doomed);E.surrender(doomed,m);assert(doomed.dead);assert.equal(E.startFight(doomed),false);
 }
 {
  const r=E.newRun('dwarf');r.gold=200;assert(E.buy(r,'weapons','ranged:1'));assert(E.stats(r).ranged>0);assert(E.buy(r,'magic','sleep'));assert.equal(E.buy(r,'weapons','melee:2'),false);assert.equal(E.load('{}'),null);
+}
+{
+ const r=E.newRun('dwarf');assert.equal(E.offer(r).gear.melee,0);r.offer=null;r.crown=true;r.level=15;assert(E.offer(r).gear.melee>2,'high-level rivals should showcase advanced market gear');
 }
 // Complete actual ordinary fights and all three tournament fights with each class.
 for(const kind of ['dwarf','ranger','mage']){

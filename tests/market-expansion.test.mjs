@@ -2,7 +2,16 @@ import assert from 'node:assert/strict';
 import * as E from '../dist/duel-engine.mjs';
 import {hero} from '../dist/arena-art.mjs';
 for(const kind of ['dwarf','ranger','mage']){
- const r=E.newRun(kind),before=E.stats(r);assert.equal(E.shop(r,'weapons').length+E.shop(r,'armor').length,28);r.gold=9999;assert.equal(E.buy(r,'weapons','melee:4'),false);r.crown=true;r.level=6;assert(E.buy(r,'weapons','melee:4'));assert.equal(E.stats(r).magic,before.magic+3);assert.equal(E.buy(r,'armor','defense:7'),false);r.level=15;assert(E.buy(r,'armor','defense:7'));assert(E.buy(r,'armor','boots:5'));assert.equal(E.stats(r).hp,before.hp+12);const loaded=E.load(JSON.stringify(r));assert(loaded);assert.deepEqual(loaded.gear,r.gear);assert.equal(E.stats(loaded).armor,E.stats(r).armor);r.gear.melee=8;assert.equal(E.load(JSON.stringify(r)),null);
+ const r=E.newRun(kind);for(const a of E.ATTRS)r.attrs[a]=20;const before=E.stats(r);assert.equal(E.shop(r,'weapons').length+E.shop(r,'armor').length,28);r.gold=9999;assert.equal(E.buy(r,'weapons','melee:4'),false);r.crown=true;r.level=9;assert(E.buy(r,'weapons','melee:4'));assert.equal(E.stats(r).magic,before.magic+3);assert.equal(E.buy(r,'armor','defense:7'),false);r.level=15;assert(E.buy(r,'armor','defense:7'));assert(E.buy(r,'armor','boots:5'));assert.equal(E.stats(r).hp,before.hp+24);const loaded=E.load(JSON.stringify(r));assert(loaded);assert.deepEqual(loaded.gear,r.gear);assert.equal(E.stats(loaded).armor,E.stats(r).armor);r.gear.melee=8;assert.equal(E.load(JSON.stringify(r)),null);
+}
+{
+ const r=E.newRun('dwarf');assert.deepEqual(E.suggestGoal(r),{category:'weapons',id:'melee:1'});assert(E.setGoal(r,'weapons','melee:7'));let g=E.goalStatus(r);assert.equal(g.goldGap,1200);assert.equal(g.levelGap,14);assert.equal(g.crownGap,true);assert.equal(g.attributeGap,9);const loaded=E.load(JSON.stringify(r));assert.deepEqual(loaded.goal,r.goal);r.goal={category:'weapons',id:'made-up'};assert.equal(E.load(JSON.stringify(r)).goal,null);
+}
+{
+ const r=E.newRun('dwarf');r.gold=110;assert(E.buy(r,'weapons','melee:1'));assert.equal(r.gold,65);r.crown=true;r.level=6;const moon=E.shop(r,'weapons').find(i=>i.id==='melee:2');assert.equal(moon.price,65);assert(E.buy(r,'weapons','melee:2'));assert.equal(r.gold,0);assert.equal(E.shop(r,'weapons').find(i=>i.id==='melee:3').locked,true);r.level=7;assert.equal(E.shop(r,'weapons').find(i=>i.id==='melee:3').locked,false);
+}
+{
+ const r=E.newRun('mage');r.level=15;r.attrs.magic=14;const dragon=E.shop(r,'weapons').find(i=>i.id==='melee:7');assert.equal(dragon.requirement,'First Crown');r.crown=true;r.gear.melee=5;assert.equal(E.stats(r).magic,8+r.attrs.magic*3+4+3);assert.equal(E.stats(r).hp,55+r.attrs.vitality*9+12);
 }
 // Exercise the actual articulated renderer with an affine canvas recorder.
 function recorder(){let m=[1,0,0,1,0,0],stack=[];const boxes=[];const point=(x,y)=>[m[0]*x+m[2]*y+m[4],m[1]*x+m[3]*y+m[5]];return {boxes,save(){stack.push([...m]);},restore(){m=stack.pop();},translate(x,y){m[4]+=m[0]*x+m[2]*y;m[5]+=m[1]*x+m[3]*y;},scale(x,y){m[0]*=x;m[1]*=x;m[2]*=y;m[3]*=y;},rotate(a){const c=Math.cos(a),s=Math.sin(a),[aa,b,cc,d]=m;m[0]=aa*c+cc*s;m[1]=b*c+d*s;m[2]=cc*c-aa*s;m[3]=d*c-b*s;},drawImage(im,...args){const [x,y,w,h]=args.slice(-4),pts=[[x,y],[x+w,y],[x,y+h],[x+w,y+h]].map(p=>point(...p));boxes.push({im,left:Math.min(...pts.map(p=>p[0])),right:Math.max(...pts.map(p=>p[0])),top:Math.min(...pts.map(p=>p[1])),bottom:Math.max(...pts.map(p=>p[1]))});}};}
