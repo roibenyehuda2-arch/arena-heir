@@ -1,6 +1,6 @@
 # Project status — 2026-09-11
 
-## Colosseum combat — ready for publication
+## Colosseum combat — published and verified
 
 Combat was rebuilt around the user's direct feedback. The forest wallpaper and bottom action dock are gone from live duels. Fights now use the illustrated Ember colosseum with stands, walls, banners, a broad sand floor, a 30-space logical arena, dynamic close/far camera, crowd motion and dust. Fighters stay large while later boots produce longer logical jumps and visibly higher arcs.
 
@@ -12,7 +12,7 @@ Save compatibility is unchanged: `arena-heir-duels-v1`, version 1. Old 0–18 po
 
 Cloud Chrome visual QA covered desktop 1365×936, phone 390×660 and narrow 320×568 views, including far and melee control clusters. The inspection corrected button-on-fighter, HUD/crowd/recap and narrow-screen clipping regressions. There was no horizontal action clipping in the final frames and no application console error observed. These are browser dimensions, not a physical iPhone or Safari performance test.
 
-Publication has not yet been recorded in this entry. Target remains the authorized GitHub Pages workflow on `main`; the preserved Sites identity is untouched.
+Verified publication: release `f292c137b803ad55cf2dbf3632aeb5e6dbade9ac` was pushed to `main` without force and deployed by the authorized GitHub Pages workflow. The public entry returned the `colosseum-combat-6` marker; `index.html`, `duel.js`, `duel-engine.mjs`, `duel.css`, `arena-art.mjs` and `woods-art.mjs` matched the release checkout byte-for-byte. Cloud Chrome opened the public URL and confirmed the live title and marker. The preserved Sites identity remains untouched.
 
 ---
 
@@ -158,3 +158,4 @@ Validation: full npm test, production syntax and whitespace checks pass. Actual 
 Deployment: prepared for the authorized GitHub Pages release; verification will be recorded after publication. Next task: user checks the revised shops on the actual phone before further combat work. Original inaccessible Sites identity retained.
 
 Verified phone-fix publication: release `fe85ca2776c77f553fd0d3dc0e803d157c7273cb` on main; Actions run `34563719690` completed validation and deployment successfully. Live GitHub Pages returned HTTP 200 and byte-for-byte checkout matches for index.html, duel.css, duel.js, arena-art.mjs and woods-art.mjs. Main was clean and synchronized to the release. Local browser QA preview was stopped. This follow-up note changes documentation only [skip ci].
+85d8863fd8fad551e1c0a151d8d0c38f85a3d025
