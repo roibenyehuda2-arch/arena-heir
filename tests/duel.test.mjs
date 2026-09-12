@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict';
 import * as E from '../dist/duel-engine.mjs';
+import {arenaLayout,healthView,actionTiming,actionPose} from '../dist/duel-presentation.mjs';
 const setup=()=>{const r=E.newRun('dwarf');E.offer(r);E.startFight(r);return r;};
 {
  const r=setup(),b=r.battle;assert.equal(b.p.stats.ranged,0);assert.deepEqual(b.p.spells,[]);assert.equal(E.act(b,'normal','p'),false);assert.equal(b.turn,'p');assert(E.act(b,'jump','p'));assert.equal(b.turn,'e');const x=b.p.x;assert.equal(E.act(b,'jump','p'),false);assert.equal(b.p.x,x);assert(E.act(b,E.ai(b),'e'));assert.equal(b.turn,'p');
  const copy=E.load(JSON.stringify(r));assert(copy);assert.deepEqual(copy.battle.p,b.p);E.act(b,'jump');E.act(copy.battle,'jump');assert.equal(copy.battle.seed,b.seed);
 }
 {
- const r=setup(),b=r.battle;b.p.spells=['sleep','lightning','frost','shield'];b.seed=1;const x=b.e.x;assert(E.act(b,'sleep'));assert.equal(b.turn,'p');assert.equal(b.e.x,x);assert(E.actions(b).find(a=>a.id==='sleep').disabled);assert(E.act(b,'lightning'));assert(b.e.protection<b.e.protectionMax);assert.equal(b.turn,'e');
+ const r=setup(),b=r.battle;b.p.spells=['sleep','lightning','frost','shield'];b.seed=1;const x=b.e.x;assert(E.act(b,'sleep'));assert.equal(b.turn,'p');assert.equal(b.e.x,x);assert(E.actions(b).find(a=>a.id==='sleep').disabled);assert(E.act(b,'lightning'));assert(b.e.hp<b.e.stats.hp);assert.equal(b.turn,'e');
 }
 {
  const r=setup();r.gold=10;E.surrender(r,{});assert.equal(r.gold,0);assert.equal(r.dead,false);assert.equal(r.level,1);assert.equal(E.settle(r,{}),false);
@@ -134,7 +135,7 @@ console.log('Crowd, taunts, criticals, named rivals, styles and legacy saves: pa
 // Armor must break before a first-blood finish; an exact break is not a wound.
 {
  const r=setup(),b=r.battle;b.p.x=10;b.e.x=11;b.seed=1;
- const hit=E.actions(b).find(a=>a.id==='quick').damage;
+ b.rule='first-blood';const hit=E.actions(b).find(a=>a.id==='quick').damage;
  b.e.protection=hit;b.e.protectionMax=hit;
  assert(E.act(b,'quick'));assert.equal(b.e.protection,0);
  assert.equal(b.e.hp,b.e.stats.hp);assert.equal(b.outcome,null);
@@ -183,3 +184,15 @@ for(const hero of ['dwarf','ranger','mage']){
  console.log(hero,'starter first-rival decisions: median',lengths[50],'p90',lengths[90]);
 }
 console.log('Turn-based rules, armor finishes, trial rewards and legacy saves: passed');
+// Every new duel finishes at zero health; camera size stays fixed at all ranges.
+for(const [w,h] of [[320,568],[390,660],[430,740],[1024,768]]){
+ const r=setup(),b=r.battle;assert.equal(b.rule,'knockout');assert.equal(b.p.protection,0);
+ const wide=arenaLayout(w,h,b);b.p.x=14;b.e.x=15;const close=arenaLayout(w,h,b);
+ assert.equal(wide.scale,close.scale);assert(close.scale*260<h*.25);
+ assert(close.map(b.e.x)-close.map(b.p.x)>=149*close.scale);
+ assert.equal(healthView(b,'e').value,b.e.hp);
+ b.e.hp=1;b.seed=1;E.act(b,'quick');assert.equal(b.e.hp,0);assert.equal(b.outcome,'win');
+ assert.equal(healthView(b,'e').value,0);
+}
+assert(actionTiming('heavy').duration>actionTiming('quick').duration);
+assert(actionPose('heavy',.2).arm<actionPose('heavy',.48).arm);

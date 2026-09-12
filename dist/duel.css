@@ -95,3 +95,7 @@
 .simple-controls .combat-cluster.move-actions{grid-template-columns:repeat(4,minmax(0,1fr))}
 .trial-result{margin:20px auto}.trial-result h1{font-size:clamp(28px,6vw,36px);line-height:1.15}
 .leave-practice{top:230px;right:12px;min-height:44px;font-size:12px}
+.in-fight .healths{position:relative;z-index:2}.in-fight .healths>div{width:46%;max-width:330px}.in-fight .healths progress{height:14px;accent-color:#e76a54}.in-fight .healths small{font-size:12px}.in-fight .healths .status:empty{display:none}
+.bout-ending{position:fixed;top:160px;left:12px;right:12px;text-align:center;text-shadow:0 3px 8px #000;pointer-events:none}.bout-ending h1{font-size:clamp(30px,7vw,48px);color:#ffde87;line-height:1.15;margin:4px}.bout-ending p{font-size:14px}.finish-bout{position:fixed;bottom:max(28px,env(safe-area-inset-bottom));left:16px;right:16px;display:flex;justify-content:center}.finish-bout button{min-width:200px;min-height:52px;font-size:17px}
+@media(max-width:600px){.in-fight .healths{padding-top:2px}.in-fight .healths b{font-size:13px}.in-fight .healths small strong{font-size:14px}.in-fight .combat-recap{top:126px}.in-fight .bout-ending{top:145px}}
+.finish-bout{pointer-events:auto}.in-fight .healths{top:auto;left:auto;right:auto;margin:0}.in-fight .healths small{display:block;line-height:18px}.in-fight .healths small strong{white-space:nowrap}

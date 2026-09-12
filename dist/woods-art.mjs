@@ -1,4 +1,4 @@
-import {heldItem} from './market-art.mjs?v=nameless-trial-2';
+import {heldItem} from './market-art.mjs?v=wide-finish-2';
 import {keyBackground} from './sprite-texture.mjs';
 import {WEAPONS,ARMORS} from './woods-engine.mjs';
 export async function loadArt(){
@@ -7,7 +7,7 @@ export async function loadArt(){
  function slice(im,cols,rows){const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(im,0,0);const p=ctx.getImageData(0,0,c.width,c.height);keyBackground(p.data,c.width,c.height,cols,rows);ctx.putImageData(p,0,0);return Array.from({length:cols*rows},(_,i)=>{const w=Math.floor(c.width/cols),h=Math.floor(c.height/rows),x=i%cols*w,y=Math.floor(i/cols)*h;let l=w,t=h,r=0,b=0;for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++)if(p.data[((y+yy)*c.width+x+xx)*4+3]>100){l=Math.min(l,xx);r=Math.max(r,xx);t=Math.min(t,yy);b=Math.max(b,yy);}const out=document.createElement('canvas');out.width=Math.max(1,r-l+1);out.height=Math.max(1,b-t+1);out.getContext('2d').drawImage(c,x+l,y+t,out.width,out.height,0,0,out.width,out.height);return out;});}
  return {parts:slice(parts,4,3),foes:slice(foes,3,2),forest};
 }
-export function drawDwarf(ctx,art,x,y,{time=0,walk=0,moving=false,face=1,weapon=0,armor=0,boots=0,attack=null,dodge=0,hurt=0,scale=1,marketGear=null,fitting=false}={}){
+export function drawDwarf(ctx,art,x,y,{time=0,walk=0,moving=false,face=1,weapon=0,armor=0,boots=0,attack=null,dodge=0,hurt=0,scale=1,marketGear=null,fitting=false,armAngle:poseArm=null}={}){
  ctx.save();ctx.translate(x,y);ctx.scale(face*scale,scale);
  const bob=moving?Math.abs(Math.sin(walk))*4:Math.sin(time*2.4)*2;
  const gait=moving?Math.sin(walk)*.42:0;
@@ -20,6 +20,7 @@ export function drawDwarf(ctx,art,x,y,{time=0,walk=0,moving=false,face=1,weapon=
  leg(17,gait);part(ARMORS[marketGear?.armor?0:armor].part,-51,-152,102,106);if(marketGear?.armor){const im=marketGear.armor,w=112+armor*10;ctx.drawImage(im,-w/2,-158,w,112);}
  let armAngle=fitting?-.85:-.12+gait*.5;
  if(attack){const q=attack.t/attack.duration;armAngle=q<.44?-.3-q*4:-2.06+(q-.44)*6;}
+ if(poseArm!==null)armAngle=poseArm;
  ctx.save();ctx.translate(34,-139);ctx.rotate(armAngle);part(2,-19,-2,38,81);
  ctx.restore();
  part(0,-65,-244,130,141);
