@@ -158,4 +158,3 @@ Validation: full npm test, production syntax and whitespace checks pass. Actual 
 Deployment: prepared for the authorized GitHub Pages release; verification will be recorded after publication. Next task: user checks the revised shops on the actual phone before further combat work. Original inaccessible Sites identity retained.
 
 Verified phone-fix publication: release `fe85ca2776c77f553fd0d3dc0e803d157c7273cb` on main; Actions run `34563719690` completed validation and deployment successfully. Live GitHub Pages returned HTTP 200 and byte-for-byte checkout matches for index.html, duel.css, duel.js, arena-art.mjs and woods-art.mjs. Main was clean and synchronized to the release. Local browser QA preview was stopped. This follow-up note changes documentation only [skip ci].
-85d8863fd8fad551e1c0a151d8d0c38f85a3d025
