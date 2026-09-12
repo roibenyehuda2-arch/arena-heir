@@ -108,3 +108,8 @@ The live duel now uses the existing illustrated Ember arena instead of a forest 
 The full-width bottom dock is gone. Accessible circular HTML controls orbit the player and change with range: far combat exposes movement, Charge, Showboat, Guard and Rest; melee exposes Quick, Strike, Heavy, Shove, Guard and Retreat. Ranged attacks and learned spells remain in a separate nearby technique cluster. Active buttons expose energy, accuracy and full descriptions to touch, keyboard and screen readers; unavailable buttons show their reason directly.
 
 Charge is a large risky gap closer that can break guard; Shove is a low-damage guard break with strong knockback; Heavy also breaks guard, knocks back and leaves its user exposed on a miss. Rest and Showboat now create a real punish window. The fight HUD preserves the player's last result alongside the rival reply instead of immediately overwriting it. Save key and version remain `arena-heir-duels-v1` / 1; old 18-space in-progress saves load naturally inside the expanded bounds.
+
+
+## Nameless Trial and short ordinary bouts
+
+New journeys open with a skippable trial, then 150 gold and three attribute points for the first build choice. Ordinary fights end at first blood after armor protection breaks; tournament fights continue through full health. Move / Attack / Defend / Skill select an action category without consuming the turn. Existing saves and old in-progress fights remain supported. The full test command covers protection finishes, trial reward idempotency, legacy saves and starter-bout cadence; browser QA remains necessary for mobile presentation.

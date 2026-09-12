@@ -6,7 +6,7 @@ const setup=()=>{const r=E.newRun('dwarf');E.offer(r);E.startFight(r);return r;}
  const copy=E.load(JSON.stringify(r));assert(copy);assert.deepEqual(copy.battle.p,b.p);E.act(b,'jump');E.act(copy.battle,'jump');assert.equal(copy.battle.seed,b.seed);
 }
 {
- const r=setup(),b=r.battle;b.p.spells=['sleep','lightning','frost','shield'];b.seed=1;const x=b.e.x;assert(E.act(b,'sleep'));assert.equal(b.turn,'p');assert.equal(b.e.x,x);assert(E.actions(b).find(a=>a.id==='sleep').disabled);assert(E.act(b,'lightning'));assert(b.e.hp<b.e.stats.hp);assert.equal(b.turn,'e');
+ const r=setup(),b=r.battle;b.p.spells=['sleep','lightning','frost','shield'];b.seed=1;const x=b.e.x;assert(E.act(b,'sleep'));assert.equal(b.turn,'p');assert.equal(b.e.x,x);assert(E.actions(b).find(a=>a.id==='sleep').disabled);assert(E.act(b,'lightning'));assert(b.e.protection<b.e.protectionMax);assert.equal(b.turn,'e');
 }
 {
  const r=setup();r.gold=10;E.surrender(r,{});assert.equal(r.gold,0);assert.equal(r.dead,false);assert.equal(r.level,1);assert.equal(E.settle(r,{}),false);
@@ -98,7 +98,7 @@ for(const kind of ['dwarf','ranger','mage']){
  b.opponent.style='archer';b.p.x=4;b.e.x=5;assert.equal(E.ai(b),'retreat','an archer makes room');
  b.opponent.style='brute';assert.equal(E.ai(b),'heavy','a brute swings hard up close');
  b.opponent.style='showman';b.e.x=14;b.e.cd={};assert.equal(E.ai(b),'taunt','a showman works the crowd');
- b.opponent.style='bulwark';b.e.hp=Math.round(b.e.stats.hp*.4);assert.equal(E.ai(b),'guard','a bulwark turtles when hurt');
+ b.opponent.style='bulwark';b.e.hp=Math.round(b.e.stats.hp*.4);b.e.protection=10;assert.equal(E.ai(b),'guard','a bulwark turtles when hurt');
 }
 // A shop can answer "does this win the fight I am about to have?".
 {
@@ -108,7 +108,7 @@ for(const kind of ['dwarf','ranger','mage']){
 }
 // The expanded arena supports large repositioning while preserving old saves and deterministic bounds.
 {
- const r=setup(),b=r.battle;assert.equal(E.ARENA_MAX,30);assert.equal(b.p.x,5);assert.equal(b.e.x,25);
+ const r=setup(),b=r.battle;assert.equal(E.ARENA_MAX,30);assert.equal(b.p.x,9);assert.equal(b.e.x,21);
  const before=b.p.x;assert(E.act(b,'charge'));assert(b.p.x>before,'charge crosses a large part of the arena');assert(b.p.x<b.e.x,'charge never crosses the rival');
  const saved=JSON.parse(JSON.stringify(r));saved.battle.p.x=E.ARENA_MAX;assert.equal(E.load(JSON.stringify(saved)).battle.p.x,E.ARENA_MAX,'new arena edge survives a save');
 }
@@ -131,4 +131,55 @@ for(const kind of ['dwarf','ranger','mage']){
  assert(checked,'a deterministic heavy miss can be produced');
 }
 console.log('Crowd, taunts, criticals, named rivals, styles and legacy saves: passed');
-console.log('Turn-based rules: passed');
+// Armor must break before a first-blood finish; an exact break is not a wound.
+{
+ const r=setup(),b=r.battle;b.p.x=10;b.e.x=11;b.seed=1;
+ const hit=E.actions(b).find(a=>a.id==='quick').damage;
+ b.e.protection=hit;b.e.protectionMax=hit;
+ assert(E.act(b,'quick'));assert.equal(b.e.protection,0);
+ assert.equal(b.e.hp,b.e.stats.hp);assert.equal(b.outcome,null);
+ assert(b.events.some(e=>e.type==='armor-break'));
+ b.turn='p';b.seed=1;assert(E.act(b,'quick'));assert.equal(b.outcome,'win');
+}
+{
+ const r=E.newRun('dwarf');r.level=3;E.enterTournament(r);E.startFight(r,1);
+ const b=r.battle;b.p.x=10;b.e.x=11;b.e.protection=1;
+ E.act(b,'quick');assert(b.e.hp<b.e.stats.hp);assert.equal(b.outcome,null);
+ assert.equal(b.rule,'tournament');
+}
+// Old mid-fight saves keep their full-health rule; no retroactive introduction.
+{
+ const r=setup();delete r.battle.rule;
+ for(const k of ['p','e']){delete r.battle[k].protection;delete r.battle[k].protectionMax;}
+ const copy=E.load(JSON.stringify(r));assert(copy);assert.equal(copy.intro,undefined);
+ copy.battle.p.x=10;copy.battle.e.x=11;copy.battle.seed=1;
+ E.act(copy.battle,'quick');assert(copy.battle.e.hp<copy.battle.e.stats.hp);
+ assert.equal(copy.battle.outcome,null);
+}
+for(const hero of ['dwarf','ranger','mage']){
+ const r=E.newRun(hero);assert(E.prepareTrial(r));assert(E.startTrial(r,1));
+ assert(E.load(JSON.stringify(r)),'trial resumes from save');
+ E.surrender(r,{});assert.equal(r.gold,0);assert.equal(r.dead,false);assert.equal(r.intro,'pending');
+ assert(E.startTrial(r,2));r.battle.outcome='win';E.settle(r,{});
+ assert.equal(r.gold,150);assert.equal(r.points,3);assert.equal(r.level,1);
+ const copy=E.load(JSON.stringify(r));assert(copy);assert.equal(E.finishTrial(copy),false);
+ assert.equal(E.prepareTrial(copy),false);assert.equal(E.settle(copy,{}),false);
+ assert.equal(copy.gold,150);
+ const skipped=E.newRun(hero);E.prepareTrial(skipped);assert(E.finishTrial(skipped));
+ assert.equal(skipped.gold,150);assert.equal(E.finishTrial(skipped),false);
+}
+for(const hero of ['dwarf','ranger','mage']){
+ const lengths=[];
+ for(let seed=1;seed<=100;seed++){
+  const r=E.newRun(hero);E.offer(r);E.startFight(r,seed);let decisions=0,steps=0;
+  while(!r.battle.outcome&&steps++<200){const b=r.battle;
+   if(b.turn==='e'){assert(E.act(b,E.ai(b),'e'));continue;}
+   decisions++;const options=E.actions(b).filter(a=>!a.disabled);
+   assert(E.act(b,b.p.energy<18?'rest':options.filter(a=>a.damage).sort((a,c)=>c.damage*c.chance-a.damage*a.chance)[0]?.id||'jump'));
+  }
+  assert(r.battle.outcome);lengths.push(decisions);
+ }
+ lengths.sort((a,b)=>a-b);assert(lengths[50]>=3&&lengths[50]<=8);
+ console.log(hero,'starter first-rival decisions: median',lengths[50],'p90',lengths[90]);
+}
+console.log('Turn-based rules, armor finishes, trial rewards and legacy saves: passed');
