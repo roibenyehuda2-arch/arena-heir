@@ -1,6 +1,6 @@
 # Project status — 2026-09-13
 
-## Mobile world, layered starter and fighter-anchored controls — ready for release
+## Mobile world, layered starter and fighter-anchored controls — published and verified
 
 The live turn-based game has been revised around the latest phone feedback. Town destinations are wooden signs placed directly on the Weaponsmith, Arena, Arcane Shop and Armory; selecting a destination sends the visible fighter walking to that building before the screen changes. The bottom navigation grid is removed. The fighter itself opens attributes, while the purchase objective remains a small bottom card.
 
@@ -9,6 +9,8 @@ New runs now show a family-friendly arena underlayer instead of full travel clot
 Combat controls are projected around the player: the chosen moves sit above the fighter and the four action groups sit beneath the feet, outside the body silhouette. The camera continuously changes its crop and fighter scale with separation, while a close-range breathing-room correction prevents the two painted fighters from merging. Result screens now retain the world, place the player's fighter in a dedicated stage and use distinct victory, regular-defeat and tournament-fall poses.
 
 QA completed before release: the entire npm regression chain passes, including all class campaigns, save compatibility, catalog purchases, combat rules and mock-DOM flows. New tests cover the two WebP atlases and legacy saves without the new slots. Cloud Chrome visual review used a 390×844 phone frame and covered the bare dwarf start, trial result, in-world town signs, Arcane Shop, every Armory type, near and far combat cameras, fighter-anchored controls, and both regular result states. The preview fixture is removed before publishing. This is browser-dimension QA, not a physical iPhone/Safari performance test.
+
+Verified publication: release `f4f87d5c28951ce052b162b7c6fc52f797daa4db` is on `main`. The GitHub Pages entry loaded successfully in Cloud Chrome and exposed the `mobile-world-1` stylesheet and module markers. Local `main` was fetched and synchronized to that exact remote commit with an empty worktree before this documentation-only follow-up.
 
 ---
 
