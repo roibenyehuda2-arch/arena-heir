@@ -1,10 +1,15 @@
-// Fixed wide camera: combat distance never changes the size of a fighter.
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+// The camera breathes with the duel: melee comes closer, separation reveals more arena.
 export function arenaLayout(w,h,b){
- const scale=Math.min(.68,w/940,h/1100),floor=Math.min(h*.64,h-210);
- const distance=Math.abs(b.p.x-b.e.x),mid=(b.p.x+b.e.x)/2;
- const gap=Math.max(0,(185*scale-distance/30*w*.86)/2);
- const map=(x,who)=>w*.07+x/30*w*.86+(who?(who==='p'?-1:1):Math.sign(x-mid))*gap;
- return {floor,scale,map,top:Math.max(145,floor-w*.49),bottom:floor+42};
+ const distance=Math.abs(b.p.x-b.e.x),phone=w<700;
+ const span=clamp(distance+(phone?9:7),phone?16:14,30),mid=(b.p.x+b.e.x)/2,center=clamp(mid,span/2,30-span/2);
+ const gutter=clamp(w*.075,22,64),scale=clamp((w-gutter*2)/(span*(phone?46:60)),.3,Math.min(.82,h/760));
+ const floor=Math.min(h*.7,h-82),left=center-span/2,pixels=w-gutter*2;
+ const raw=x=>gutter+(x-left)/span*pixels,visualDistance=distance/span*pixels;
+ // Keep the painted fighters readable at grappling range instead of letting their bodies merge.
+ const breathingRoom=Math.max(0,(150*scale+12-visualDistance)/2),direction=b.p.x<=b.e.x?1:-1;
+ const map=(x,who)=>raw(x)+(who==='p'?-direction*breathingRoom:who==='e'?direction*breathingRoom:0);
+ return {floor,scale,map,span,center,left,top:Math.max(116,floor-h*.52),bottom:floor+46};
 }
 export function healthView(b,who){
  const a=b[who],lost=b.outcome===(who==='p'?'loss':'win');

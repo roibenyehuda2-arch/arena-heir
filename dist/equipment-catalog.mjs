@@ -21,6 +21,11 @@ const NAMES={
  robe:['Phoenix Mantle','Deepsea Veil','Tempest Vestments','Dragon Oracle'],
  boots:['Coalwalkers','Tide Treaders','Cloudsteppers','Dragon Striders']
 };
-export function equipmentName(hero,slot,tier){const type=slot==='melee'?hero==='mage'?'staff':hero==='ranger'?'blade':'axe':slot==='ranged'?hero==='mage'?'wand':hero==='ranger'?'bow':'throwing':slot==='defense'?hero==='mage'?'robe':hero==='ranger'?'leather':'armor':'boots';if(tier>=4)return NAMES[type][tier-4];const stem=type==='throwing'?'throwing axe':type;if(!tier)return slot==='ranged'?'Not owned':slot==='defense'?'Travel clothes':slot==='boots'?'Old boots':`Worn ${stem}`;return `${TIERS[tier].name} ${stem}`;}
+const ARMORY_NAMES={
+ shoulders:['Bare shoulders','Leather shoulder pads','Moonsteel spaulders','Royal pauldrons','Ember pauldrons','Tideguard shoulders','Stormwing pauldrons','Dragon shoulders'],
+ helmet:['No helmet','Leather arena cap','Moonsteel helm','Royal crown-helm','Ember helm','Tide helm','Storm helm','Dragon crown-helm'],
+ shield:['No shield','Ironbark buckler','Moonsteel shield','Royal lion shield','Ember shield','Tide shield','Storm shield','Dragon shield']
+};
+export function equipmentName(hero,slot,tier){if(ARMORY_NAMES[slot])return ARMORY_NAMES[slot][tier];const type=slot==='melee'?hero==='mage'?'staff':hero==='ranger'?'blade':'axe':slot==='ranged'?hero==='mage'?'wand':hero==='ranger'?'bow':'throwing':slot==='defense'?hero==='mage'?'robe':hero==='ranger'?'leather':'armor':'boots';if(tier>=4)return NAMES[type][tier-4];const stem=type==='throwing'?'throwing axe':type;if(!tier)return slot==='ranged'?'Not owned':slot==='defense'?'No body armor':slot==='boots'?'Arena foot wraps':`Worn ${stem}`;return `${TIERS[tier].name} ${stem}`;}
 export function unlockReason(run,tier){const t=TIERS[tier],needs=[];if(t.crown&&!run.crown)needs.push('First Crown');if(run.level<t.level)needs.push(`level ${t.level}`);return needs.join(' + ');}
-export function equipmentBonuses(gear){const out={};for(const equipped of Object.values(gear))for(let tier=1;tier<=equipped;tier++){const t=TIERS[tier];if(t?.bonus)out[t.bonus]=(out[t.bonus]||0)+t.amount;}return out;}
+export function equipmentBonuses(gear){const out={};for(const slot of ['melee','ranged','defense','boots'])for(let tier=1;tier<=(gear[slot]||0);tier++){const t=TIERS[tier];if(t?.bonus)out[t.bonus]=(out[t.bonus]||0)+t.amount;}return out;}

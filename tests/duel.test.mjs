@@ -184,12 +184,14 @@ for(const hero of ['dwarf','ranger','mage']){
  console.log(hero,'starter first-rival decisions: median',lengths[50],'p90',lengths[90]);
 }
 console.log('Turn-based rules, armor finishes, trial rewards and legacy saves: passed');
-// Every new duel finishes at zero health; camera size stays fixed at all ranges.
+// Every new duel finishes at zero health; the camera pulls back as rivals separate.
 for(const [w,h] of [[320,568],[390,660],[430,740],[1024,768]]){
  const r=setup(),b=r.battle;assert.equal(b.rule,'knockout');assert.equal(b.p.protection,0);
  const wide=arenaLayout(w,h,b);b.p.x=14;b.e.x=15;const close=arenaLayout(w,h,b);
- assert.equal(wide.scale,close.scale);assert(close.scale*260<h*.25);
- assert(close.map(b.e.x)-close.map(b.p.x)>=149*close.scale);
+ assert(wide.scale<close.scale);assert(wide.span>close.span);assert(close.scale*260<h*.4);
+ assert(close.map(b.e.x,'e')-close.map(b.p.x,'p')>=150*close.scale+11);
+ for(const x of [0,1,15,29,30])assert(Number.isFinite(wide.map(x)));
+ assert(wide.map(30)>wide.map(0));
  assert.equal(healthView(b,'e').value,b.e.hp);
  b.e.hp=1;b.seed=1;E.act(b,'quick');assert.equal(b.e.hp,0);assert.equal(b.outcome,'win');
  assert.equal(healthView(b,'e').value,0);

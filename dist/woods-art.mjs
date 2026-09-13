@@ -1,4 +1,4 @@
-import {heldItem} from './market-art.mjs?v=wide-finish-2';
+import {heldItem} from './market-art.mjs?v=mobile-world-1';
 import {keyBackground} from './sprite-texture.mjs';
 import {WEAPONS,ARMORS} from './woods-engine.mjs';
 export async function loadArt(){
@@ -14,16 +14,17 @@ export function drawDwarf(ctx,art,x,y,{time=0,walk=0,moving=false,face=1,weapon=
  if(dodge){ctx.rotate(-.24);ctx.translate(0,15);}
  ctx.globalAlpha=hurt>0&&Math.floor(time*24)%2?.55:1;
  const part=(n,x,y,w,h)=>ctx.drawImage(art.parts[n],x,y,w,h);
- function leg(x,a){ctx.save();ctx.translate(x,-61);ctx.rotate(a);if(boots&&!marketGear?.boots)ctx.filter=`hue-rotate(${boots*18}deg) brightness(${1+boots*.1})`;part(3,-19,0,40,65);if(marketGear?.boots){const im=marketGear.boots;ctx.drawImage(im,x<0?0:im.width/2,0,im.width/2,im.height,-23,20,46,48+boots*3);}ctx.restore();}
+ function leg(x,a){ctx.save();ctx.translate(x,-61);ctx.rotate(a);if(boots&&!marketGear?.boots)ctx.filter=`hue-rotate(${boots*18}deg) brightness(${1+boots*.1})`;part(3,-19,0,40,65);if(marketGear?.boots){const im=marketGear.boots,half=im.width/2;ctx.drawImage(im,x<0?0:half,0,half,im.height,-29,9,58,58);}ctx.restore();}
  leg(-21,-gait);ctx.translate(0,-bob);
+ if(marketGear?.shield){const im=marketGear.shield,h=118+Math.min(26,im.height*.05),w=h*im.width/im.height;ctx.drawImage(im,-84-w*.35,-190,w,h);}
  ctx.save();ctx.translate(-36,-142);ctx.rotate(.15+gait*.45);part(2,-18,0,38,80);ctx.restore();
- leg(17,gait);part(ARMORS[marketGear?.armor?0:armor].part,-51,-152,102,106);if(marketGear?.armor){const im=marketGear.armor,w=112+armor*10;ctx.drawImage(im,-w/2,-158,w,112);}
+ leg(17,gait);if(marketGear?.baseBody&&!marketGear?.armor){const im=marketGear.baseBody,sx=im.width*.24,sw=im.width*.52;ctx.drawImage(im,sx,0,sw,im.height,-55,-165,110,128);}else part(ARMORS[marketGear?.armor?0:armor].part,-51,-152,102,106);if(marketGear?.armor){const im=marketGear.armor,w=112+armor*10;ctx.drawImage(im,-w/2,-158,w,112);}if(marketGear?.shoulders){const im=marketGear.shoulders,half=im.width/2;ctx.drawImage(im,0,0,half,im.height,-83,-174,60,58);ctx.drawImage(im,half,0,half,im.height,23,-174,60,58);}
  let armAngle=fitting?-.85:-.12+gait*.5;
  if(attack){const q=attack.t/attack.duration;armAngle=q<.44?-.3-q*4:-2.06+(q-.44)*6;}
  if(poseArm!==null)armAngle=poseArm;
  ctx.save();ctx.translate(34,-139);ctx.rotate(armAngle);part(2,-19,-2,38,81);
  ctx.restore();
- part(0,-65,-244,130,141);
+ part(0,-65,-244,130,141);if(marketGear?.helmet){const im=marketGear.helmet,w=78,h=w*im.height/im.width;ctx.drawImage(im,-w/2,-252,w,h);}
  if(armor&&!marketGear?.armor)part(armor===1?9:10,19,-158,55,48);
  if(armor===2&&!marketGear?.armor)part(11,-62,-254,122,94);
  ctx.save();ctx.translate(34,-139);ctx.rotate(armAngle);ctx.translate(4,fitting?65:60);ctx.rotate(fitting?.12-armAngle:.40);if(marketGear?.weapon)heldItem(ctx,marketGear.weapon,marketGear.weaponTier,fitting);else part(WEAPONS[weapon].part,-36,-124,80,155);ctx.restore();

@@ -20,6 +20,12 @@ for(const file of ['world-map.webp','ember-arena.webp','miri-sheet.webp','tovin-
   assert.equal(bytes.toString('ascii',0,4),'RIFF',`${file} is WebP`);
   assert.equal(bytes.toString('ascii',8,12),'WEBP',`${file} is WebP`);
 }
+for(const file of ['armor-accessories.webp','starter-bodies.webp']){
+  const bytes=readFileSync(new URL(`../dist/assets/crownlands/${file}`,import.meta.url));
+  assert.ok(bytes.length>100_000,`${file} is a production-resolution illustration`);
+  assert.equal(bytes.toString('ascii',0,4),'RIFF',`${file} is WebP`);
+  assert.equal(bytes.toString('ascii',8,12),'WEBP',`${file} is WebP`);
+}
 const game=readFileSync(new URL('../dist/game2d.js',import.meta.url),'utf8'),storybook=readFileSync(new URL('../dist/storybook.css',import.meta.url),'utf8');
 assert.doesNotMatch(game,/combat3d/,'production game uses the illustrated combat director');
 for(const file of ['world-map.webp','ember-arena.webp','miri-sheet.webp','tovin-sheet.webp','suri-sheet.webp','boar-rival-sheet.webp','equipment-sheet.webp'])assert.match(storybook,new RegExp(file.replace('.','\\.')),`${file} is wired into the illustrated experience`);

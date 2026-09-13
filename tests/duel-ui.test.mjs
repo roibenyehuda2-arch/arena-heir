@@ -15,7 +15,7 @@ const saved=new Map(),context={E,arenaLayout,healthView,actionTiming,actionPose,
 let source=fs.readFileSync(new URL('../dist/duel.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');source=source.slice(0,source.indexOf('try{[art,town,'))+'\nglobalThis.ui={get run(){return run},get view(){return view},get training(){return training},get category(){return category},get shopSlot(){return shopSlot},get preview(){return preview},arrive(){const done=townTravel?.done;townTravel=null;locked=false;done?.();},previewRun,render,go};render();';
 vm.runInNewContext(source,context);
 const click=async action=>{element('screen').onclick({target:{closest:()=>({dataset:{do:action},disabled:false})}});for(let i=0;i<40;i++)await Promise.resolve();};
-assert.match(element('screen').innerHTML,/Who will claim/);await click('choose:dwarf');assert.equal(context.ui.view,'intro');assert.match(element('screen').innerHTML,/NAMELESS TRIAL/);await click('skip-intro');assert.equal(context.ui.run.gold,150);assert.equal(context.ui.run.points,3);assert.equal(context.ui.run.level,1);assert.equal(E.finishTrial(context.ui.run),false);context.ui.run.gold=0;context.ui.run.points=0;context.ui.run.result=null;context.ui.go('town');assert.equal(context.ui.view,'town');assert.match(element('screen').innerHTML,/Weaponsmith/);await click('offer');assert.equal(context.ui.view,'offer');await click('fight');assert.equal(context.ui.view,'fight');const b=context.ui.run.battle;await click('act:jump');assert.equal(b.turn,'p');assert.equal(b.count,3);assert(E.load(saved.get(E.SAVE)));
+assert.match(element('screen').innerHTML,/Who will claim/);await click('choose:dwarf');assert.equal(context.ui.view,'intro');assert.match(element('screen').innerHTML,/NAMELESS TRIAL/);await click('skip-intro');assert.equal(context.ui.run.gold,150);assert.equal(context.ui.run.points,3);assert.equal(context.ui.run.level,1);assert.equal(E.finishTrial(context.ui.run),false);context.ui.run.gold=0;context.ui.run.points=0;context.ui.run.result=null;context.ui.go('town');assert.equal(context.ui.view,'town');assert.match(element('screen').innerHTML,/town-scene[^]*town-nav/);assert.match(element('screen').innerHTML,/fighter-hotspot/);await click('arena');assert.equal(context.ui.view,'town');context.ui.arrive();assert.equal(context.ui.view,'arena');await click('offer');assert.equal(context.ui.view,'offer');await click('fight');assert.equal(context.ui.view,'fight');const b=context.ui.run.battle;await click('act:jump');assert.equal(b.turn,'p');assert.equal(b.count,3);assert(E.load(saved.get(E.SAVE)));
 E.surrender(context.ui.run,{});context.ui.go('town');context.ui.run.gold=200;await click('shop:magic');context.ui.arrive();await click('preview:sleep');await click('buy');assert(context.ui.run.spells.includes('sleep'));await click('preview:lightning');await click('train');assert(context.ui.training);assert(context.ui.training.spells.includes('lightning'));await click('leave-training');assert.equal(context.ui.training,null);assert(!context.ui.run.spells.includes('lightning'));
 context.ui.go('town');assert.match(element('screen').innerHTML,/NEXT PRIZE/);assert.match(element('screen').innerHTML,/Ironbark axe/);
 assert.match(element('screen').innerHTML,/warming up in the arena/,'the town names who waits in the arena');
@@ -32,7 +32,8 @@ await click('fight');assert.equal(context.ui.view,'fight');
 assert.match(element('screen').innerHTML,/health/,'the fight exposes health meters');
 assert.match(element('screen').innerHTML,/0 HP/,'the finish condition is explicit');
 assert.match(element('screen').innerHTML,/data-do="act:taunt"/,'a taunt is offered');
-assert.match(element('screen').innerHTML,/simple-controls/,'the four-category controls are present');
+assert.match(element('screen').innerHTML,/fighter-controls/,'the four-category controls are anchored to the fighter');
+assert.doesNotMatch(element('screen').innerHTML,/simple-controls/,'combat no longer renders as a bottom dock');
 assert.match(element('screen').innerHTML,/combat-recap/,'the last two combat beats remain visible');
 for(const group of ['move','attack','defend','skill'])assert.match(element('screen').innerHTML,new RegExp('data-do="group:'+group+'"'));
 await click('group:attack');assert.match(element('screen').innerHTML,/data-do="act:charge"/,'the far-range cluster offers a charge');
@@ -53,7 +54,7 @@ let terminal=context.ui.run.battle;terminal.p.x=10;terminal.e.x=11;terminal.e.hp
 await click('act:quick');assert.equal(context.ui.view,'fight');assert.equal(terminal.e.hp,0);
 assert.match(element('screen').innerHTML,/VICTORY!/);assert.match(element('screen').innerHTML,/finish-bout/);
 assert.equal(context.ui.run.gold,0);assert.equal(E.load(saved.get(E.SAVE)).battle.outcome,'win');
-await click('finish-bout');assert.equal(context.ui.run.gold,150);assert.equal(context.ui.view,'result');
+await click('finish-bout');assert.equal(context.ui.run.gold,150);assert.equal(context.ui.view,'result');assert.match(element('screen').innerHTML,/result-stage victory/);
 await click('finish-bout');assert.equal(context.ui.run.gold,150);
 await click('choose:dwarf');await click('trial');
 terminal=context.ui.run.battle;terminal.p.x=10;terminal.e.x=11;terminal.p.hp=1;terminal.seed=1;

@@ -1,3 +1,17 @@
+# Project status — 2026-09-13
+
+## Mobile world, layered starter and fighter-anchored controls — ready for release
+
+The live turn-based game has been revised around the latest phone feedback. Town destinations are wooden signs placed directly on the Weaponsmith, Arena, Arcane Shop and Armory; selecting a destination sends the visible fighter walking to that building before the screen changes. The bottom navigation grid is removed. The fighter itself opens attributes, while the purchase objective remains a small bottom card.
+
+New runs now show a family-friendly arena underlayer instead of full travel clothing, so armor progression is visible from the first minute. The Armory has five illustrated shelves: body armor, paired shoulder pieces, helmets, shields and boots. All eight tiers are represented, new defensive slots contribute to armor, and old saves migrate the three missing slots to zero. Boots, shoulder pieces and helmets use separate fitted placements rather than one oversized centered image. Arcane previews remain spell icons and descriptions; the shop fighter no longer holds the selected spell.
+
+Combat controls are projected around the player: the chosen moves sit above the fighter and the four action groups sit beneath the feet, outside the body silhouette. The camera continuously changes its crop and fighter scale with separation, while a close-range breathing-room correction prevents the two painted fighters from merging. Result screens now retain the world, place the player's fighter in a dedicated stage and use distinct victory, regular-defeat and tournament-fall poses.
+
+QA completed before release: the entire npm regression chain passes, including all class campaigns, save compatibility, catalog purchases, combat rules and mock-DOM flows. New tests cover the two WebP atlases and legacy saves without the new slots. Cloud Chrome visual review used a 390×844 phone frame and covered the bare dwarf start, trial result, in-world town signs, Arcane Shop, every Armory type, near and far combat cameras, fighter-anchored controls, and both regular result states. The preview fixture is removed before publishing. This is browser-dimension QA, not a physical iPhone/Safari performance test.
+
+---
+
 # Project status — 2026-09-11
 
 ## Colosseum combat — published and verified

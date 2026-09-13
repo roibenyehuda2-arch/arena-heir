@@ -131,6 +131,16 @@ Action identity is now mechanical. Charge crosses up to stride + 7 spaces, attac
 
 The engine emits explicit miss and immutable block/absorption/knockback metadata, so sound and animation no longer inspect guard state after it has been cleared. The renderer adds recoil, larger critical text, MISS/BLOCK/AEGIS callouts, dust, stronger impact shake and a 680ms action beat. A two-line recap preserves the player's action while the rival replies. Brutes now use Charge; showmen use Shove against Guard; the existing six rival identities remain intact rather than adding breadth.
 
+## Mobile world and visible defensive build — 2026-09-13
+
+On phones, the town remains a place rather than a menu: destination labels sit on their buildings and the fighter walks to the selected entrance. Attributes are opened through the fighter itself. No second navigation block duplicates the world at the bottom of the screen.
+
+Each hero begins in a modest arena underlayer with no body armor, helmet, shoulder pieces or shield. Armory progression now covers five independent visible slots: body, shoulders, helmet, shield and boots. The new defensive accessories improve the shared Armor stat and use the same eight-tier Crownfall ladder, while their lower prices allow smaller upgrades between major weapon or body-armor goals. Existing saves receive empty accessory slots automatically.
+
+Spells are learned abilities rather than held equipment. The Arcane Shop therefore previews the spell emblem and effect without placing that emblem in the fighter's hand. Practice still uses the previewed spell mechanically.
+
+In combat, controls belong to the fighter instead of the viewport edge. Move/Attack/Defend/Skill tabs are anchored below the player's feet; the current group's individual actions sit above the head with a protected gap. The arena camera frames both fighters from their current logical distance, zooming out as they separate and moving closer for melee. A minimum painted separation preserves silhouettes at grappling range. Victory, defeat and final tournament loss each show the player's fighter in the result composition.
+
 
 ## Short bouts and the Nameless Trial — 2026-09-12
 
