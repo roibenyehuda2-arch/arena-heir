@@ -48,9 +48,9 @@ for(const kind of ['dwarf','ranger','mage'])for(let tier=0;tier<8;tier++)for(con
  assert.equal(torsoDraws.length,1,kind+' draws one torso');
  assert.equal(armDraws.length,2,kind+' draws both arms');
  assert.equal(legDraws.length,2,kind+' draws both legs');
- // Mirroring: the far limb is flipped so the two feet do not point the same way.
- assert.equal(legDraws.filter(b=>b.flipped).length,1,kind+' mirrors exactly one leg');
- assert.equal(armDraws.filter(b=>b.flipped).length,1,kind+' mirrors exactly one arm');
+ // Separation: the pair hangs from two distinct joints instead of stacking on one.
+ assert(Math.abs(legDraws[0].left-legDraws[1].left)>6*scale,kind+' legs hang from separate hips');
+ assert(Math.abs(armDraws[0].left-armDraws[1].left)>6*scale,kind+' arms hang from separate shoulders');
  // Proportion: every body part keeps the aspect ratio of its own artwork.
  for(const [name,draws,dims] of [['torso',torsoDraws,REAL[kind].torso],['arm',armDraws,REAL[kind].arm],['leg',legDraws,REAL[kind].leg]])
   for(const d of draws)assert(Math.abs(aspect(d)-dims[0]/dims[1])<.02,`${kind} ${name} keeps its natural aspect ratio`);
@@ -82,4 +82,4 @@ for(const kind of ['dwarf','ranger','mage'])for(const shape of [{width:300,heigh
  assert(box.left>x+40*scale,kind+' broad weapon stays off the face');
  assert(box.top>=0&&box.bottom<=ground+4,kind+' broad weapon stays within the preview');
 }
-console.log('Expanded catalog purchases, bonuses, unlocks and save round trips pass; rig anatomy, mirroring, natural aspect ratios, footing and weapon fit pass',cases,'class/tier/phone cases.');
+console.log('Expanded catalog purchases, bonuses, unlocks and save round trips pass; rig anatomy, limb separation, natural aspect ratios, footing and weapon fit pass',cases,'class/tier/phone cases.');

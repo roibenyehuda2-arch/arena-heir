@@ -4,9 +4,9 @@
 // figure reads as one character. The previous rig forced each part into a fixed rectangle — a
 // 99x292 arm squeezed into 40x80 — which is what made the fighters look assembled from spares.
 //
-// Worn equipment is painted here as fitted layers anchored to those joints. The illustrated
-// inventory art stays in the shop, where its own framing and detail belong; pasting a shop icon
-// onto a moving body is what produced masks stuck to foreheads and boots floating up the shin.
+// Worn equipment uses the shop's own painted illustrations, fitted to those joints. The old defect
+// was the placement, not the artwork: a 76px helmet icon centred on a 130px head became a mask
+// stuck to a forehead, and a boots picture cut at its midpoint hovered up a fully drawn bare shin.
 
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 // Sprites carry their own proportions; the fallbacks only serve headless tests with stub images.
@@ -30,163 +30,58 @@ export const RIGS={
 };
 RIGS.thorn={...RIGS.dwarf};
 
-// Tier palettes. Worn gear has no layer at all; every later tier reads darker, brighter or hotter.
-const TIER=[null,
- {base:'#8a5b33',dark:'#4f3018',light:'#c79256',trim:'#e0b877'},
- {base:'#9fb4c2',dark:'#576c7b',light:'#e8f2f8',trim:'#cfe1ec'},
- {base:'#c9a227',dark:'#7d5c0f',light:'#ffe9a8',trim:'#fff3c9'},
- {base:'#c8502a',dark:'#6d2410',light:'#ffab5e',trim:'#ffd08a',glow:'#ff7a33'},
- {base:'#2f9aa6',dark:'#13555e',light:'#a9eff5',trim:'#d7fbff',glow:'#5fd8e4'},
- {base:'#6f5fd0',dark:'#332a72',light:'#cfc6ff',trim:'#e8e3ff',glow:'#9d8dff'},
- {base:'#b4302c',dark:'#5f110f',light:'#ffc96b',trim:'#ffe6a8',glow:'#ff6a3c'}];
+// Worn illustrations, fitted to the rig instead of redrawn.
+//
+// The shop's painted helms, pauldrons, boots and shields are the good art in this project; the old
+// defect was placing them, not drawing them. Each one is scaled from a joint measurement the rig
+// already knows and anchored where that piece actually sits on a body.
 
-function shade(ctx,box,t,vertical=true){
- const g=vertical?ctx.createLinearGradient(0,box.top,0,box.bottom):ctx.createLinearGradient(box.left,0,box.right,0);
- g.addColorStop(0,t.light);g.addColorStop(.45,t.base);g.addColorStop(1,t.dark);return g;
-}
-const outline=(ctx,w=3)=>{ctx.strokeStyle='#2b1d12';ctx.lineWidth=w;ctx.lineJoin='round';ctx.stroke();};
-
-// A helmet fitted to the actual head box, covering hair from the brow up and never the face.
-function drawHelmet(ctx,rig,head,tier){
- const t=TIER[tier];if(!t)return;
- const cap=rig.cap||{x:0,y:.03,w:.62,h:.36},cx=head.cx+head.w*cap.x,w=head.w*cap.w,h=head.h*cap.h,top=head.top+head.h*cap.y,brow=top+h*.74,style=rig.hat;
- ctx.save();
- if(style==='wizard'){
-  const tipY=top-h*.44,brim=w*.72;
-  ctx.beginPath();ctx.moveTo(cx-brim,brow-h*.04);ctx.quadraticCurveTo(cx-w*.20,brow-h*.30,cx-w*.06,tipY);
-  ctx.quadraticCurveTo(cx+w*.16,brow-h*.34,cx+brim*.62,brow-h*.06);
-  ctx.quadraticCurveTo(cx,brow+h*.10,cx-brim,brow-h*.04);ctx.closePath();
-  ctx.fillStyle=shade(ctx,{top:tipY,bottom:brow},t);ctx.fill();outline(ctx,3.2);
-  ctx.beginPath();ctx.ellipse(cx-w*.02,brow-h*.02,brim*.92,h*.10,0,0,Math.PI*2);
-  ctx.fillStyle=t.dark;ctx.fill();outline(ctx,2.6);
-  if(tier>=4){ctx.beginPath();ctx.arc(cx+w*.20,brow-h*.16,w*.075,0,Math.PI*2);ctx.fillStyle=t.glow||t.trim;ctx.fill();outline(ctx,2);}
- }else if(style==='hood'){
-  ctx.beginPath();ctx.moveTo(cx-w*.50,brow+h*.16);
-  ctx.quadraticCurveTo(cx-w*.56,top-h*.06,cx,top-h*.08);
-  ctx.quadraticCurveTo(cx+w*.56,top-h*.06,cx+w*.50,brow+h*.16);
-  ctx.quadraticCurveTo(cx+w*.30,brow-h*.06,cx+w*.22,brow-h*.02);
-  ctx.quadraticCurveTo(cx,brow-h*.20,cx-w*.22,brow-h*.02);
-  ctx.quadraticCurveTo(cx-w*.30,brow-h*.06,cx-w*.50,brow+h*.16);ctx.closePath();
-  ctx.fillStyle=shade(ctx,{top:top-h*.08,bottom:brow+h*.16},t);ctx.fill();outline(ctx,3);
-  ctx.beginPath();ctx.moveTo(cx-w*.50,brow+h*.10);ctx.quadraticCurveTo(cx-w*.66,brow+h*.34,cx-w*.40,brow+h*.42);
-  ctx.quadraticCurveTo(cx-w*.34,brow+h*.22,cx-w*.50,brow+h*.10);ctx.closePath();
-  ctx.fillStyle=t.dark;ctx.fill();outline(ctx,2.4);
- }else{
-  ctx.beginPath();ctx.moveTo(cx-w*.46,brow);
-  ctx.quadraticCurveTo(cx-w*.50,top+h*.02,cx,top);
-  ctx.quadraticCurveTo(cx+w*.50,top+h*.02,cx+w*.46,brow);ctx.closePath();
-  ctx.fillStyle=shade(ctx,{top,bottom:brow},t);ctx.fill();outline(ctx,3.2);
-  ctx.beginPath();ctx.rect(cx-w*.46,brow-h*.06,w*.92,h*.10);
-  ctx.fillStyle=t.trim;ctx.fill();outline(ctx,2.4);
-  ctx.beginPath();ctx.moveTo(cx-w*.07,brow-h*.02);ctx.lineTo(cx+w*.07,brow-h*.02);
-  ctx.lineTo(cx+w*.05,brow+h*.20);ctx.lineTo(cx-w*.05,brow+h*.20);ctx.closePath();
-  ctx.fillStyle=t.base;ctx.fill();outline(ctx,2.4);
-  if(tier>=4){for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*w*.40,brow-h*.10);
-   ctx.quadraticCurveTo(cx+s*w*.80,top-h*.10,cx+s*w*.54,top-h*.30);
-   ctx.quadraticCurveTo(cx+s*w*.58,top+h*.04,cx+s*w*.34,brow-h*.12);ctx.closePath();
-   ctx.fillStyle=t.glow||t.light;ctx.fill();outline(ctx,2.4);}}
- }
- ctx.restore();
+// A helmet is sized from the skull box, not the head sprite, whose bounds include beard and hair.
+// The atlas ships one painted helm set for all three classes — there are no wizard hats or hoods in
+// it yet — so each class only varies the fit. The helms frame a face opening in their lower half,
+// and a larger brow value lifts that opening clear of the eyes.
+const HELMET_FIT={helm:{width:1.40,brow:.50},wizard:{width:1.30,brow:.54},hood:{width:1.34,brow:.52}};
+function drawHelmetArt(ctx,rig,head,im){
+ if(!im||!im.width)return;
+ const cap=rig.cap||{x:0,y:.03,w:.62,h:.36},fit=HELMET_FIT[rig.hat]||HELMET_FIT.helm;
+ const skullW=head.w*cap.w,skullTop=head.top+head.h*cap.y,skullH=head.h*cap.h;
+ const w=skullW*fit.width,h=w*im.height/im.width;
+ // Anchor by the face opening: the helm's brow line sits a little above the character's eyes.
+ ctx.drawImage(im,head.cx+head.w*cap.x-w*.5,skullTop+skullH*fit.brow-h*fit.brow-h*.06,w,h);
 }
 
-// Body armor sits on the torso box as a fitted plate, jerkin or robe rather than a shop picture.
-// It spans the real shoulder joints so the chest reads as worn rather than as a plank taped on.
-function drawBodyArmor(ctx,rig,torso,tier,span){
- const t=TIER[tier];if(!t)return;
- const {cx,top,bottom}=torso,h=bottom-top,build=rig.build;
- const w=Math.min(Math.max(torso.w,span*.72),torso.w*1.18),hem=build==='slim'?bottom+h*.22:bottom-h*.04;
- const neck=w*.15;
- ctx.save();
- ctx.beginPath();
- ctx.moveTo(cx-neck,top+h*.05);
- ctx.quadraticCurveTo(cx-w*.44,top+h*.00,cx-w*.50,top+h*.20);   // left shoulder cap
- ctx.lineTo(cx-w*(build==='heavy'?.44:.38),hem);
- ctx.quadraticCurveTo(cx,hem+h*.10,cx+w*(build==='heavy'?.44:.38),hem);
- ctx.lineTo(cx+w*.50,top+h*.20);                                  // right shoulder cap
- ctx.quadraticCurveTo(cx+w*.44,top+h*.00,cx+neck,top+h*.05);
- ctx.quadraticCurveTo(cx,top+h*.16,cx-neck,top+h*.05);ctx.closePath();
- ctx.fillStyle=shade(ctx,{top,bottom:hem},t);ctx.fill();outline(ctx,3.2);
- if(build==='heavy'){
-  ctx.beginPath();ctx.moveTo(cx,top+h*.22);ctx.lineTo(cx,hem-h*.08);ctx.strokeStyle=t.dark;ctx.lineWidth=3;ctx.stroke();
-  ctx.beginPath();ctx.ellipse(cx,top+h*.46,w*.15,h*.14,0,0,Math.PI*2);ctx.fillStyle=t.trim;ctx.fill();outline(ctx,2.4);
- }else if(build==='light'){
-  for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*w*.26,top+h*.18);ctx.lineTo(cx-s*w*.14,hem-h*.12);
-   ctx.strokeStyle=t.dark;ctx.lineWidth=w*.08;ctx.lineCap='round';ctx.stroke();}
-  ctx.beginPath();ctx.rect(cx-w*.36,hem-h*.22,w*.72,h*.13);ctx.fillStyle=t.trim;ctx.fill();outline(ctx,2.2);
- }else{
-  ctx.beginPath();ctx.moveTo(cx-w*.14,top+h*.14);ctx.lineTo(cx,hem-h*.06);ctx.lineTo(cx+w*.14,top+h*.14);
-  ctx.strokeStyle=t.trim;ctx.lineWidth=3.5;ctx.stroke();
- }
- if(tier>=4&&t.glow){ctx.beginPath();ctx.arc(cx,top+h*.38,w*.08,0,Math.PI*2);ctx.fillStyle=t.glow;ctx.globalAlpha=.85;ctx.fill();ctx.globalAlpha=1;outline(ctx,2);}
- ctx.restore();
+// Shoulders and boots ship as left/right pairs in one cell, so each half goes on its own joint.
+function drawPairHalf(ctx,im,side,w,x,y,h){
+ const half=Math.floor(im.width/2);
+ ctx.drawImage(im,side<0?0:im.width-half,0,half,im.height,x-w*.5,y,w,h??w*im.height/half);
 }
-
-// A pauldron capping one shoulder joint, drawn per side so nothing is duplicated or left floating.
-function drawPauldron(ctx,rig,joint,armW,tier,side){
- const t=TIER[tier];if(!t)return;
- const w=armW*(rig.build==='heavy'?1.16:1.02),h=w*.72;
+function drawPauldronArt(ctx,rig,joint,armW,im,side){
+ if(!im||!im.width)return;
+ const half=Math.floor(im.width/2),w=armW*(rig.build==='heavy'?1.34:1.22),h=w*im.height/half;
  ctx.save();ctx.translate(joint.x,joint.y);
- ctx.beginPath();ctx.moveTo(-w*.5,h*.30);
- ctx.quadraticCurveTo(-w*.52,-h*.42,0,-h*.46);
- ctx.quadraticCurveTo(w*.52,-h*.42,w*.5,h*.30);
- ctx.quadraticCurveTo(0,h*.56,-w*.5,h*.30);ctx.closePath();
- ctx.fillStyle=shade(ctx,{top:-h*.46,bottom:h*.36},t);ctx.fill();outline(ctx,3);
- ctx.beginPath();ctx.moveTo(-w*.38,h*.06);ctx.quadraticCurveTo(0,-h*.12,w*.38,h*.06);
- ctx.strokeStyle=t.trim;ctx.lineWidth=2.6;ctx.stroke();
- if(tier>=5){ctx.beginPath();ctx.moveTo(side*w*.30,-h*.30);ctx.lineTo(side*w*.62,-h*.74);ctx.lineTo(side*w*.44,-h*.22);ctx.closePath();
-  ctx.fillStyle=t.glow||t.light;ctx.fill();outline(ctx,2.2);}
+ // Centre the cap on the joint: a pauldron caps the shoulder, it does not hang down the chest.
+ drawPairHalf(ctx,im,side,w,0,-h*.66,h);
  ctx.restore();
 }
-
-// A sleeve and bracer so an armored fighter never shows a bare animated arm over a plated chest.
-function drawSleeve(ctx,rig,armW,armH,tier){
- const t=TIER[tier];if(!t)return;
- ctx.save();
- ctx.beginPath();ctx.moveTo(-armW*.54,armH*.02);ctx.lineTo(armW*.54,armH*.02);
- ctx.lineTo(armW*.46,armH*.40);ctx.lineTo(-armW*.46,armH*.40);ctx.closePath();
- ctx.fillStyle=shade(ctx,{top:0,bottom:armH*.40},t);ctx.fill();outline(ctx,2.6);
- ctx.beginPath();ctx.rect(-armW*.44,armH*.60,armW*.88,armH*.16);
- ctx.fillStyle=t.dark;ctx.fill();outline(ctx,2.2);
- ctx.restore();
+function drawBootArt(ctx,rig,legW,legH,im,side){
+ if(!im||!im.width)return;
+ const half=Math.floor(im.width/2);
+ // Fit the shaft to the lower leg, then widen just enough to enclose the calf; a boot may take a
+ // little distortion where a body may not.
+ const h=legH*(rig.build==='heavy'?.78:.74),natural=h*half/im.height,w=clamp(legW*1.12,natural,natural*1.3);
+ // The sole sits on the foot so the painted boot encloses it instead of hovering up the shin.
+ drawPairHalf(ctx,im,side,w,0,legH*1.01-h,h);
 }
-
-// A boot fitted to the end of one leg, hiding the bare foot it replaces.
-function drawBoot(ctx,rig,legW,legH,tier){
- const t=TIER[tier];if(!t)return;
- const top=legH*(rig.build==='heavy'?.52:.58),w=legW*1.04,sole=legH*1.005,toe=legW*(rig.build==='heavy'?1.08:.94);
- ctx.save();
- // Shaft: follows the calf and flares slightly at the cuff.
- ctx.beginPath();
- ctx.moveTo(-w*.46,top+legH*.02);
- ctx.quadraticCurveTo(0,top-legH*.03,w*.46,top+legH*.02);
- ctx.quadraticCurveTo(w*.40,legH*.80,w*.36,legH*.90);
- ctx.lineTo(-w*.40,legH*.90);
- ctx.quadraticCurveTo(-w*.44,legH*.80,-w*.46,top+legH*.02);ctx.closePath();
- ctx.fillStyle=shade(ctx,{top,bottom:legH},t);ctx.fill();outline(ctx,3);
- // Foot: a rounded toe box reaching past the ankle so no bare toes peek out below.
- ctx.beginPath();
- ctx.moveTo(-w*.42,legH*.84);
- ctx.lineTo(toe*.62,legH*.84);
- ctx.quadraticCurveTo(toe*.96,legH*.90,toe*.86,sole);
- ctx.lineTo(-w*.34,sole);
- ctx.quadraticCurveTo(-w*.54,sole,-w*.42,legH*.84);ctx.closePath();
- ctx.fillStyle=t.dark;ctx.fill();outline(ctx,2.8);
- ctx.beginPath();ctx.rect(-w*.46,top+legH*.02,w*.92,legH*.08);
- ctx.fillStyle=t.trim;ctx.fill();outline(ctx,2.2);
- ctx.restore();
+function drawShieldArt(ctx,im,armH){
+ if(!im||!im.width)return;
+ const h=armH*1.02,w=h*im.width/im.height;
+ ctx.drawImage(im,-w*.62,-h*.52,w,h);
 }
-
-// A shield carried on the off hand, sized by tier and kept clear of the face.
-function drawShield(ctx,rig,tier,scaleRef){
- const t=TIER[tier];if(!t)return;
- const h=scaleRef*(.60+tier*.032),w=h*.84;
- ctx.save();ctx.translate(-w*.32,-h*.06);
- ctx.beginPath();ctx.moveTo(-w*.5,-h*.42);ctx.lineTo(w*.5,-h*.42);
- ctx.lineTo(w*.5,h*.12);ctx.quadraticCurveTo(0,h*.58,-w*.5,h*.12);ctx.closePath();
- ctx.fillStyle=shade(ctx,{top:-h*.42,bottom:h*.5},t);ctx.fill();outline(ctx,3.2);
- ctx.beginPath();ctx.arc(0,-h*.10,w*.17,0,Math.PI*2);ctx.fillStyle=t.trim;ctx.fill();outline(ctx,2.4);
- if(tier>=4&&t.glow){ctx.beginPath();ctx.arc(0,-h*.10,w*.09,0,Math.PI*2);ctx.fillStyle=t.glow;ctx.fill();}
- ctx.restore();
+// Body armor is a full painted torso piece, scaled to the torso and drawn under the arms.
+function drawArmorArt(ctx,rig,torso,im){
+ if(!im||!im.width)return;
+ const w=torso.w*(rig.build==='heavy'?1.30:1.22),h=w*im.height/im.width;
+ ctx.drawImage(im,torso.cx-w*.5,torso.top-h*.06,w,h);
 }
 
 // Held weapons keep their illustration but gain a real grip anchor and an uncapped size ladder.
@@ -219,8 +114,6 @@ export function drawFighter(ctx,art,kind,x,y,gear={},opts={}){
  if(dodge){ctx.rotate(-.2);ctx.translate(0,12);}
  if(hurt>0)ctx.globalAlpha=.62;
 
- // Headless recorders used by the geometry tests only implement the transform and drawImage calls.
- const paintable=typeof ctx.beginPath==='function'&&typeof ctx.createLinearGradient==='function';
  const gait=moving?Math.sin(walk)*.42:0,bob=moving?Math.abs(Math.sin(walk))*3:Math.sin(time*2)*1.8;
  const armH=rig.arm.h,armW=armH*ratio(armIm,FALLBACK.arm);
  const legH=rig.leg.h,legW=legH*ratio(legIm,FALLBACK.leg);
@@ -229,33 +122,39 @@ export function drawFighter(ctx,art,kind,x,y,gear={},opts={}){
  const headBox={cx:rig.head.x,top:rig.head.y,w:headW,h:headH};
  const torsoBox={cx:rig.torso.x,top:rig.torso.y,bottom:rig.torso.y+torsoH,w:torsoW};
 
- // One leg, hung from its hip and mirrored for the far side so the feet do not point the same way.
- const drawLeg=(joint,angle,mirror)=>{
-  ctx.save();ctx.translate(joint.x,joint.y);ctx.rotate(angle);if(mirror)ctx.scale(-1,1);
+ // Limbs share one sprite, so the far side reads by depth instead: its own joint, its own swing,
+ // and a shadow pass over it. Mirroring was tried and turned the trailing foot backwards mid-stride.
+ const tint=kind==='thorn'?'hue-rotate(38deg) ':'';
+ const farFilter=tint+'brightness(.72) saturate(.9)';
+ const drawLeg=(joint,angle,back)=>{
+  ctx.save();ctx.translate(joint.x,joint.y);ctx.rotate(angle);
+  if(back)ctx.filter=farFilter;
   if(legIm)ctx.drawImage(legIm,-legW*.5,0,legW,legH);
-  if(g.boots>0&&paintable)drawBoot(ctx,rig,legW,legH,g.boots);
+  if(mg?.boots)drawBootArt(ctx,rig,legW,legH,mg.boots,back?-1:1);
   ctx.restore();
  };
- // One arm, hung from its shoulder, carrying whatever that hand holds.
- const drawArm=(joint,angle,mirror,hand)=>{
-  ctx.save();ctx.translate(joint.x,joint.y);ctx.rotate(angle);if(mirror)ctx.scale(-1,1);
+ // One arm, hung from its shoulder. What the hand holds is drawn first so the fist closes over it.
+ const drawArm=(joint,angle,back,hand)=>{
+  ctx.save();ctx.translate(joint.x,joint.y);ctx.rotate(angle);
+  if(back)ctx.filter=farFilter;
+  if(hand){ctx.save();ctx.translate(0,armH*rig.arm.grip);hand(ctx);ctx.restore();}
   if(armIm)ctx.drawImage(armIm,-armW*.5,0,armW,armH);
-  if(g.defense>0&&paintable)drawSleeve(ctx,rig,armW,armH,g.defense);
-  if(hand){ctx.save();ctx.translate(0,armH*rig.arm.grip);if(mirror)ctx.scale(-1,1);hand(ctx);ctx.restore();}
   ctx.restore();
  };
 
  // Far side first, then the body, then the near side: nothing is drawn over its own sleeve.
  drawLeg(rig.leg.back,-gait,true);
- drawArm(rig.arm.back,.16+gait*.5,true,g.shield>0&&paintable?c=>drawShield(c,rig,g.shield,armH):null);
- if(g.shoulders>0&&paintable)drawPauldron(ctx,rig,rig.arm.back,armW,g.shoulders,-1);
+ const backSwing=.16+gait*.5;
+ drawArm(rig.arm.back,backSwing,true,null);
+ if(mg?.shoulders)drawPauldronArt(ctx,rig,rig.arm.back,armW,mg.shoulders,-1);
 
  ctx.translate(0,-bob);
  drawLeg(rig.leg.front,gait,false);
  if(torsoIm)ctx.drawImage(torsoIm,torsoBox.cx-torsoW*.5,torsoBox.top,torsoW,torsoH);
- if(g.defense>0&&paintable)drawBodyArmor(ctx,rig,torsoBox,g.defense,Math.abs(rig.arm.front.x)+Math.abs(rig.arm.back.x)+armW*.5);
+ if(mg?.armor)drawArmorArt(ctx,rig,torsoBox,mg.armor);
  if(headIm)ctx.drawImage(headIm,headBox.cx-headW*.5,headBox.top,headW,headH);
- if(g.helmet>0&&paintable)drawHelmet(ctx,rig,headBox,g.helmet);
+ if(mg?.helmet)drawHelmetArt(ctx,rig,headBox,mg.helmet);
+ if(mg?.shield){ctx.save();ctx.translate(rig.arm.back.x,rig.arm.back.y);ctx.rotate(backSwing);ctx.translate(0,armH*rig.arm.grip);drawShieldArt(ctx,mg.shield,armH);ctx.restore();}
 
  let angle=opts.armAngle;
  if(angle===undefined||angle===null){
@@ -267,6 +166,6 @@ export function drawFighter(ctx,art,kind,x,y,gear={},opts={}){
   c.rotate(fitting?.10-angle:.34);
   if(mg?.weapon)drawHeldWeapon(c,mg.weapon,mg.weaponTier??g.melee,fitting,mg.weaponSlot==='ranged');
  });
- if(g.shoulders>0&&paintable)drawPauldron(ctx,rig,rig.arm.front,armW,g.shoulders,1);
+ if(mg?.shoulders)drawPauldronArt(ctx,rig,rig.arm.front,armW,mg.shoulders,1);
  ctx.restore();
 }

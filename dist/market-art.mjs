@@ -9,7 +9,13 @@ function emptyArmorSprite(market,slot){market.emptyArmor??=new Map();if(!market.
 export function itemSprite(market,kind,slot,tier=0){if(slot==='magic')return market.spells[['lightning','sleep','frost','shield','meteor'].indexOf(tier)];if(!tier&&['defense','shoulders','helmet','shield'].includes(slot))return emptyArmorSprite(market,slot);const accessoryRow={shield:0,shoulders:1,helmet:2,boots:3}[slot];if(accessoryRow!==undefined)return market.accessories[accessoryRow*8+tier];const row=slot==='defense'?kind==='mage'?7:kind==='ranger'?6:4:slot==='ranged'?kind==='mage'?2:kind==='ranger'?3:0:kind==='mage'?2:kind==='ranger'?1:0;return tier>3?market.expanded[row*4+tier-4]:market.gear[row*4+tier];}
 export function itemURL(market,kind,item){const key=kind+':'+item.id;if(!market.urls.has(key)){const im=itemSprite(market,kind,item.slot||'magic',item.slot?item.tier:item.id);market.urls.set(key,im.toDataURL());}return market.urls.get(key);}
 export function costume(market,kind,gear,slot='melee'){if(!market)return null;const row=kind==='mage'?1:kind==='ranger'?2:0;
- // The rig paints worn gear itself; only the held weapon and the class body parts come from the atlases.
- return {weapon:itemSprite(market,kind,slot,gear[slot]),weaponTier:gear[slot],weaponSlot:slot,starterParts:market.starterParts?.slice(row*3,row*3+3)};}
+ // The rig fits these illustrations to its own joints; it does not redraw them.
+ return {weapon:itemSprite(market,kind,slot,gear[slot]),weaponTier:gear[slot],weaponSlot:slot,
+  starterParts:market.starterParts?.slice(row*3,row*3+3),
+  armor:gear.defense?itemSprite(market,kind,'defense',gear.defense):null,
+  boots:gear.boots?itemSprite(market,kind,'boots',gear.boots):null,
+  shoulders:gear.shoulders?itemSprite(market,kind,'shoulders',gear.shoulders):null,
+  helmet:gear.helmet?itemSprite(market,kind,'helmet',gear.helmet):null,
+  shield:gear.shield?itemSprite(market,kind,'shield',gear.shield):null};}
 export function drawKeeper(ctx,market,category,x,y,height,time){const im=market.keepers[KEEPERS[category].index],bob=Math.sin(time*1.8+KEEPERS[category].index)*2;ctx.save();ctx.translate(x,y+bob);ctx.rotate(Math.sin(time*.9)*.012);ctx.drawImage(im,-height*im.width/im.height/2,-height,height*im.width/im.height,height);ctx.restore();}
 export function heldItem(ctx,im,tier,fitting=false){const target=[74,110,140,164,172,180,188,198][tier]||198,s=Math.min(target/im.height,(fitting?105:160)/im.width),h=im.height*s,w=im.width*s;ctx.drawImage(im,fitting?-w*.1:-w*.3,-h*.78,w,h);}
