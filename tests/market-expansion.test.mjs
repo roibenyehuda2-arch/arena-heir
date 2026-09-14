@@ -17,10 +17,69 @@ for(const kind of ['dwarf','ranger','mage']){
  const legacy=E.newRun('dwarf');delete legacy.gear.shoulders;delete legacy.gear.helmet;delete legacy.gear.shield;const loaded=E.load(JSON.stringify(legacy));assert(loaded);assert.equal(loaded.gear.shoulders,0);assert.equal(loaded.gear.helmet,0);assert.equal(loaded.gear.shield,0);
 }
 // Exercise the actual articulated renderer with an affine canvas recorder.
-function recorder(){let m=[1,0,0,1,0,0],stack=[];const boxes=[];const point=(x,y)=>[m[0]*x+m[2]*y+m[4],m[1]*x+m[3]*y+m[5]];return {boxes,save(){stack.push([...m]);},restore(){m=stack.pop();},translate(x,y){m[4]+=m[0]*x+m[2]*y;m[5]+=m[1]*x+m[3]*y;},scale(x,y){m[0]*=x;m[1]*=x;m[2]*=y;m[3]*=y;},rotate(a){const c=Math.cos(a),s=Math.sin(a),[aa,b,cc,d]=m;m[0]=aa*c+cc*s;m[1]=b*c+d*s;m[2]=cc*c-aa*s;m[3]=d*c-b*s;},drawImage(im,...args){const [x,y,w,h]=args.slice(-4),pts=[[x,y],[x+w,y],[x,y+h],[x+w,y+h]].map(p=>point(...p));boxes.push({im,left:Math.min(...pts.map(p=>p[0])),right:Math.max(...pts.map(p=>p[0])),top:Math.min(...pts.map(p=>p[1])),bottom:Math.max(...pts.map(p=>p[1]))});}};}
-let cases=0;for(const kind of ['dwarf','ranger','mage'])for(let tier=0;tier<8;tier++)for(const width of [320,360,390,430]){
- const weapon={width:tier%2?300:110,height:180},armor={width:180,height:160},ctx=recorder(),stageWidth=width-20,stageHeight=667*.29,scale=Math.min((stageHeight-65)/260,stageWidth/430,.93),x=stageWidth*.53;
- hero(ctx,{parts:Array.from({length:12},()=>({})),classes:Array.from({length:12},()=>({}))},kind,x,stageHeight-28,{melee:tier,ranged:0,defense:tier,boots:0,magic:0},{fitting:true,scale,time:0,marketGear:{weapon,weaponTier:tier,armor:tier?armor:null}});
- const box=ctx.boxes.find(b=>b.im===weapon);assert(box);assert(box.left>x+65*scale,kind+' weapon must stay outside face and torso');assert(box.right<stageWidth,kind+' weapon fits phone stage');assert(box.top>=0,kind+' weapon stays within preview');cases++;
+// Sprites carry the real measured dimensions of the shipped atlases, because the defect being
+// guarded against was parts drawn at an aspect ratio that had nothing to do with their artwork.
+function recorder(){let m=[1,0,0,1,0,0],stack=[];const boxes=[];const point=(x,y)=>[m[0]*x+m[2]*y+m[4],m[1]*x+m[3]*y+m[5]];return {boxes,save(){stack.push([...m]);},restore(){m=stack.pop();},translate(x,y){m[4]+=m[0]*x+m[2]*y;m[5]+=m[1]*x+m[3]*y;},scale(x,y){m[0]*=x;m[1]*=x;m[2]*=y;m[3]*=y;},rotate(a){const c=Math.cos(a),s=Math.sin(a),[aa,b,cc,d]=m;m[0]=aa*c+cc*s;m[1]=b*c+d*s;m[2]=cc*c-aa*s;m[3]=d*c-b*s;},drawImage(im,...args){const [x,y,w,h]=args.slice(-4),pts=[[x,y],[x+w,y],[x,y+h],[x+w,y+h]].map(p=>point(...p));boxes.push({im,flipped:m[0]*m[3]-m[1]*m[2]<0,drawnW:w*Math.hypot(m[0],m[1]),drawnH:h*Math.hypot(m[2],m[3]),left:Math.min(...pts.map(p=>p[0])),right:Math.max(...pts.map(p=>p[0])),top:Math.min(...pts.map(p=>p[1])),bottom:Math.max(...pts.map(p=>p[1]))});}};}
+// Measured from the shipped WebP atlases.
+const REAL={dwarf:{head:[281,336],torso:[259,289],arm:[112,306],leg:[175,322]},
+ mage:{head:[346,340],torso:[255,293],arm:[99,292],leg:[173,314]},
+ ranger:{head:[352,362],torso:[256,300],arm:[96,296],leg:[170,323]}};
+function stubArt(kind){
+ const m=REAL[kind],im=([width,height])=>({width,height});
+ const parts=Array.from({length:12},()=>({width:200,height:300})),classes=Array.from({length:12},()=>({width:200,height:300}));
+ parts[0]=im(m.head);classes[0]=im(REAL.mage.head);classes[4]=im(REAL.ranger.head);
+ return {art:{parts,classes},starterParts:[im(m.torso),im(m.arm),im(m.leg)]};
 }
-console.log('Expanded catalog purchases, bonuses, unlocks and save round trips pass; fitting bounds pass',cases,'class/tier/phone cases.');
+const aspect=b=>b.drawnW/b.drawnH;
+let cases=0,widest=new Map();
+for(const kind of ['dwarf','ranger','mage'])for(let tier=0;tier<8;tier++)for(const width of [320,360,390,430]){
+ const {art,starterParts}=stubArt(kind);
+ const weapon={width:110,height:180},ctx=recorder();
+ const stageWidth=width-20,stageHeight=667*.29,scale=Math.min((stageHeight-65)/260,stageWidth/430,.93),x=stageWidth*.53,ground=stageHeight-28;
+ const gear={melee:tier,ranged:0,defense:tier,boots:tier,shoulders:tier,helmet:tier,shield:tier,magic:0};
+ hero(ctx,art,kind,x,ground,gear,{fitting:true,scale,time:0,marketGear:{weapon,weaponTier:tier,weaponSlot:'melee',starterParts}});
+ const head=ctx.boxes.find(b=>b.im===art[kind==='dwarf'?'parts':'classes'][kind==='ranger'?4:0]);
+ const torsoDraws=ctx.boxes.filter(b=>b.im===starterParts[0]);
+ const armDraws=ctx.boxes.filter(b=>b.im===starterParts[1]);
+ const legDraws=ctx.boxes.filter(b=>b.im===starterParts[2]);
+ const box=ctx.boxes.find(b=>b.im===weapon);
+ // Anatomy: one head, one torso, and a pair of each limb.
+ assert(head,kind+' draws a head');
+ assert.equal(torsoDraws.length,1,kind+' draws one torso');
+ assert.equal(armDraws.length,2,kind+' draws both arms');
+ assert.equal(legDraws.length,2,kind+' draws both legs');
+ // Mirroring: the far limb is flipped so the two feet do not point the same way.
+ assert.equal(legDraws.filter(b=>b.flipped).length,1,kind+' mirrors exactly one leg');
+ assert.equal(armDraws.filter(b=>b.flipped).length,1,kind+' mirrors exactly one arm');
+ // Proportion: every body part keeps the aspect ratio of its own artwork.
+ for(const [name,draws,dims] of [['torso',torsoDraws,REAL[kind].torso],['arm',armDraws,REAL[kind].arm],['leg',legDraws,REAL[kind].leg]])
+  for(const d of draws)assert(Math.abs(aspect(d)-dims[0]/dims[1])<.02,`${kind} ${name} keeps its natural aspect ratio`);
+ assert(Math.abs(aspect(head)-REAL[kind].head[0]/REAL[kind].head[1])<.02,kind+' head keeps its natural aspect ratio');
+ // Footing: the fighter stands on the ground line rather than floating or sinking.
+ const feet=Math.max(...legDraws.map(b=>b.bottom));
+ assert(Math.abs(feet-ground)<6*scale+2,kind+' stands on the ground line');
+ assert(head.top>ground-260*scale,kind+' crown stays inside the stage');
+ // Weapon: gripped clear of the face, inside the stage, and growing with tier.
+ assert(box,kind+' draws the held weapon');
+ assert(box.left>x+40*scale,kind+' weapon must stay outside face and torso');
+ assert(box.right<stageWidth,kind+' weapon fits phone stage');
+ assert(box.top>=0,kind+' weapon stays within preview');
+ assert(box.bottom<=ground+4,kind+' weapon does not sink through the sand');
+ if(width===390)widest.set(kind+':'+tier,box.right-box.left);
+ cases++;
+}
+// Money buys presence: a top-tier weapon reads visibly larger than a starter one.
+for(const kind of ['dwarf','ranger','mage'])
+ assert(widest.get(kind+':7')>widest.get(kind+':1')*1.25,kind+' shows a clear weapon size progression');
+// A broad weapon still has to stay on the stage and off the fighter's face.
+for(const kind of ['dwarf','ranger','mage'])for(const shape of [{width:300,height:180},{width:120,height:320}]){
+ const {art,starterParts}=stubArt(kind),ctx=recorder();
+ const stageWidth=370,stageHeight=667*.29,scale=Math.min((stageHeight-65)/260,stageWidth/430,.93),x=stageWidth*.53,ground=stageHeight-28;
+ hero(ctx,art,kind,x,ground,{melee:7,ranged:0,defense:0,boots:0,shoulders:0,helmet:0,shield:0,magic:0},
+  {fitting:true,scale,time:0,marketGear:{weapon:shape,weaponTier:7,weaponSlot:'melee',starterParts}});
+ const box=ctx.boxes.find(b=>b.im===shape);
+ assert(box.right<stageWidth,kind+' broad weapon fits the phone stage');
+ assert(box.left>x+40*scale,kind+' broad weapon stays off the face');
+ assert(box.top>=0&&box.bottom<=ground+4,kind+' broad weapon stays within the preview');
+}
+console.log('Expanded catalog purchases, bonuses, unlocks and save round trips pass; rig anatomy, mirroring, natural aspect ratios, footing and weapon fit pass',cases,'class/tier/phone cases.');

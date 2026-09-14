@@ -1,4 +1,4 @@
-import {heldItem} from './market-art.mjs?v=starter-rig-1';
+import {heldItem} from './market-art.mjs?v=starter-rig-2';
 import {keyBackground} from './sprite-texture.mjs';
 import {WEAPONS,ARMORS} from './woods-engine.mjs';
 export async function loadArt(){

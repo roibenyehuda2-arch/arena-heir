@@ -113,3 +113,11 @@ Charge is a large risky gap closer that can break guard; Shove is a low-damage g
 ## Nameless Trial and short ordinary bouts
 
 New journeys open with a skippable trial, then 150 gold and three attribute points for the first build choice. New fights finish at zero HP; the loser falls and remains visible until Continue/Claim reward. Armor reduces damage. The camera stays wide even in melee, and health loss occurs at the contact beat. Move / Attack / Defend / Skill select a category without consuming the turn. Old in-progress fights retain their saved rules. Tests cover camera scale, health finishes, end-state reward settlement, trial rewards and save compatibility. Browser QA remains necessary for mobile presentation.
+
+## Articulated fighter rig
+
+`dist/fighter-rig.mjs` draws the fighters. Each class has an explicit skeleton — head, torso, two shoulders, two hips, a grip point along the arm — and every sprite is drawn at the aspect ratio of its own artwork instead of being squeezed into a fixed rectangle. The far arm and far leg are mirrored, so all three classes have two arms, two legs and feet that point outward.
+
+Worn helmets, shoulders, body armor, boots and shields are painted as fitted layers anchored to those joints, in per-tier palettes and class-appropriate shapes: dwarven helms, wizard hats, archer hoods. The shop keeps showing its illustrated inventory art; the fighter wears a fitted rendition of it. Held weapons keep their illustrations and scale by height across eight tiers, so an expensive weapon looks expensive.
+
+Validation adds `node --check dist/fighter-rig.mjs`. The renderer geometry test now supplies the real measured atlas dimensions and asserts anatomy (two arms, two legs, one mirrored each), natural aspect ratios for every part, footing on the ground line, weapon grip clearance from the face, stage fit at 320/360/390/430, and a visible tier-1 to tier-7 weapon size progression.

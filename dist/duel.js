@@ -1,7 +1,7 @@
-import {arenaLayout,healthView,actionTiming,actionPose} from './duel-presentation.mjs?v=starter-rig-1';
-import {loadMarket,KEEPERS,itemURL,costume,drawKeeper,itemSprite} from './market-art.mjs?v=starter-rig-1';
-import * as E from './duel-engine.mjs?v=starter-rig-1';
-import {assets,hero} from './arena-art.mjs?v=starter-rig-1';
+import {arenaLayout,healthView,actionTiming,actionPose} from './duel-presentation.mjs?v=starter-rig-2';
+import {loadMarket,KEEPERS,itemURL,costume,drawKeeper,itemSprite} from './market-art.mjs?v=starter-rig-2';
+import * as E from './duel-engine.mjs?v=starter-rig-2';
+import {assets,hero} from './arena-art.mjs?v=starter-rig-2';
 const $=id=>document.getElementById(id),screen=$('screen'),canvas=$('world'),ctx=canvas.getContext('2d');
 let market=null,shopSlot='melee',shopMessage='',townPosition={x:.48,y:.82},townTravel=null;
 let meta={},run=null,view='choose',category='weapons',preview=null,art,town,arenaBackdrop,locked=false,animation=null,training=null,saveError=false,shake=0;

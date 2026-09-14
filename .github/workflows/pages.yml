@@ -26,6 +26,7 @@ jobs:
       - name: Check production JavaScript
         run: |
           node --check dist/equipment-catalog.mjs
+          node --check dist/fighter-rig.mjs
           node --check dist/market-art.mjs
           node --check dist/duel.js
           node --check dist/duel-engine.mjs
