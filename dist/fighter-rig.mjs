@@ -18,15 +18,15 @@ export const RIGS={
  dwarf:{height:248,head:{h:134,y:-248,x:0},torso:{h:108,y:-154,x:0},
   arm:{h:96,front:{x:44,y:-150},back:{x:-44,y:-148},grip:.82},
   leg:{h:94,front:{x:21,y:-94},back:{x:-21,y:-92}},
-  cap:{x:0,y:.03,w:.60,h:.34},build:'heavy',hat:'helm'},
+  cap:{x:0,y:.03,w:.60,h:.34},face:{y:.34,w:.60,x:0},build:'heavy',hat:'helm'},
  mage:{height:248,head:{h:118,y:-248,x:0},torso:{h:108,y:-152,x:0},
   arm:{h:94,front:{x:36,y:-146},back:{x:-36,y:-144},grip:.84},
   leg:{h:92,front:{x:17,y:-92},back:{x:-17,y:-90}},
-  cap:{x:0,y:.02,w:.56,h:.36},build:'slim',hat:'wizard'},
+  cap:{x:0,y:.02,w:.52,h:.36},face:{y:.60,w:.44,x:.02},build:'slim',hat:'wizard'},
  ranger:{height:248,head:{h:120,y:-248,x:0},torso:{h:104,y:-150,x:0},
   arm:{h:92,front:{x:35,y:-144},back:{x:-35,y:-142},grip:.84},
   leg:{h:94,front:{x:17,y:-94},back:{x:-17,y:-92}},
-  cap:{x:0,y:.01,w:.66,h:.40},build:'light',hat:'hood'}
+  cap:{x:0,y:.01,w:.56,h:.40},face:{y:.58,w:.42,x:.04},build:'light',hat:'hood'}
 };
 RIGS.thorn={...RIGS.dwarf};
 
@@ -36,18 +36,40 @@ RIGS.thorn={...RIGS.dwarf};
 // defect was placing them, not drawing them. Each one is scaled from a joint measurement the rig
 // already knows and anchored where that piece actually sits on a body.
 
-// A helmet is sized from the skull box, not the head sprite, whose bounds include beard and hair.
-// The atlas ships one painted helm set for all three classes — there are no wizard hats or hoods in
-// it yet — so each class only varies the fit. The helms frame a face opening in their lower half,
-// and a larger brow value lifts that opening clear of the eyes.
-const HELMET_FIT={helm:{width:1.40,brow:.50},wizard:{width:1.30,brow:.54},hood:{width:1.34,brow:.52}};
+// The atlas ships one painted helm set for all three classes — no wizard hats or hoods yet — so the
+// classes differ only in fit. These are full helms with a face opening, and the whole job is to line
+// that opening up with the character's eyes. Sizing to the skull instead left the opening hovering
+// above the face, which read as a helmet stuck to a forehead.
+// The painted face opening is an opaque dark cavity, not a transparent window, so aligning it with
+// the eyes simply hides the face. Only the crown of each helm is worn: the dome, crest and horns
+// that carry the silhouette. CROWN is how much of the illustration that is, measured from the top.
+const CROWN=.56;
+// Cropping leaves a hard horizontal edge that shows against hair, so each crown is cut once and its
+// lower band faded out. Cached per illustration; the fighters redraw every frame.
+const crowns=new WeakMap();
+function crownOf(im){
+ if(crowns.has(im))return crowns.get(im);
+ if(typeof document==='undefined')return im;
+ const sh=Math.round(im.height*CROWN),c=document.createElement('canvas');
+ c.width=im.width;c.height=sh;
+ const x=c.getContext('2d');
+ x.drawImage(im,0,0,im.width,sh,0,0,im.width,sh);
+ // One destination-in pass over the whole crop: opaque down to the fade line, then out to nothing.
+ const fade=x.createLinearGradient(0,0,0,sh);
+ fade.addColorStop(0,'#000');fade.addColorStop(.58,'#000');fade.addColorStop(1,'rgba(0,0,0,0)');
+ x.globalCompositeOperation='destination-in';
+ x.fillStyle=fade;x.fillRect(0,0,im.width,sh);
+ crowns.set(im,c);return c;
+}
 function drawHelmetArt(ctx,rig,head,im){
  if(!im||!im.width)return;
- const cap=rig.cap||{x:0,y:.03,w:.62,h:.36},fit=HELMET_FIT[rig.hat]||HELMET_FIT.helm;
- const skullW=head.w*cap.w,skullTop=head.top+head.h*cap.y,skullH=head.h*cap.h;
- const w=skullW*fit.width,h=w*im.height/im.width;
- // Anchor by the face opening: the helm's brow line sits a little above the character's eyes.
- ctx.drawImage(im,head.cx+head.w*cap.x-w*.5,skullTop+skullH*fit.brow-h*fit.brow-h*.06,w,h);
+ const face=rig.face||{y:.45,w:.55,x:0},cap=rig.cap||{x:0,y:.03,w:.62,h:.36};
+ const crown=crownOf(im),sh=crown===im?Math.round(im.height*CROWN):crown.height;
+ const w=head.w*cap.w*(rig.build==='heavy'?1.30:1.14),h=w*sh/im.width;
+ // The brim stops just above the eyes, so the face below it stays the character's own.
+ const brim=head.top+head.h*face.y-head.h*.03;
+ if(crown===im)ctx.drawImage(im,0,0,im.width,sh,head.cx+head.w*face.x-w*.5,brim-h,w,h);
+ else ctx.drawImage(crown,head.cx+head.w*face.x-w*.5,brim-h,w,h);
 }
 
 // Shoulders and boots ship as left/right pairs in one cell, so each half goes on its own joint.
