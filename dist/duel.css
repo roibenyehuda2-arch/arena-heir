@@ -115,6 +115,25 @@
 @media(max-width:600px){.fighter-controls .combat-cluster{left:-85px;width:170px;grid-template-columns:repeat(3,52px);gap:6px}.fighter-controls .combat-action{width:52px;height:52px;min-height:52px}.fighter-controls .combat-tabs{left:-108px;width:216px;top:8px}.fighter-controls .combat-tabs button{font-size:10px;min-height:40px}.fighter-controls .action-readout{display:none}.in-fight .combat-recap{top:116px}}
 @media(max-width:360px),(max-height:590px){.fighter-controls .combat-cluster{left:-78px;width:156px;grid-template-columns:repeat(3,48px);gap:5px}.fighter-controls .combat-action{width:48px;height:48px;min-height:48px}.fighter-controls .combat-tabs{left:-104px;width:208px}.in-fight .combat-recap{top:108px}}
 
+/* Town coordinates share the uncropped illustration's 3:2 aspect ratio on phones. */
+@media(max-width:799px){
+ .in-town #screen{min-height:calc(100svh - 54px)}
+ .in-town .town-heading{top:64px;left:14px;right:14px}
+ .in-town .town-heading .tag{font-size:10px;letter-spacing:1px}
+ .in-town .town-heading h1{font-size:26px}
+ .in-town .arena-call{font-size:11px;line-height:1.35;margin-top:4px;max-width:95%}
+ .in-town .arena-call small{display:none}
+ .in-town .town-scene{top:158px;bottom:auto;height:66.6667vw;min-height:0}
+ .in-town .town-nav button{min-height:44px;padding:4px 6px;font-size:10px;max-width:29%;border:0;background:transparent;box-shadow:none;text-shadow:0 1px 3px #000,0 2px 5px #000,1px 0 2px #000;color:#fff3cb}
+ .in-town .town-nav button:hover:not(:disabled){transform:translate(-50%,-50%);background:#30241488}
+ .in-town .town-scene .destination.weapons{left:15%;top:42%}
+ .in-town .town-scene .destination.arena{left:45%;top:31%}
+ .in-town .town-scene .destination.magic{left:69%;top:39%}
+ .in-town .town-scene .destination.armor{left:90%;top:43%}
+ .in-town .fighter-hotspot{width:70px;height:100px}
+ .in-town .fighter-hotspot span{font-size:10px;padding:3px 6px}
+ .in-town .bottom{position:absolute;top:calc(174px + 66.6667vw);bottom:auto;left:12px;right:12px}
+}
 /* Rich result cards and compact five-category armory tabs. */
 .result{margin:12px auto 20px;padding-top:14px;background:linear-gradient(#143a30f4 0,#143a3033 18px,#143a3033 198px,#143a30f4 198px)}.result-stage{height:178px;margin:-4px auto 4px;border-bottom:1px solid #d9ba6b66;background:radial-gradient(ellipse at 50% 88%,#c9903d2c,transparent 66%)}.result h1{font-size:clamp(32px,7vw,46px)}.result .reward{margin:8px 0}.trial-result{margin-top:12px}.stock-tabs{overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}.stock-tabs::-webkit-scrollbar{display:none}.stock-tabs button{flex:0 0 auto}.stock-tabs .browse-hint{flex:0 0 auto}
 @media(max-width:600px){.result{margin-top:4px;padding:10px 14px 14px;background:linear-gradient(#143a30f4 0,#143a3033 12px,#143a3033 165px,#143a30f4 165px)}.result-stage{height:145px}.result h1{font-size:34px}.result .goal-card{margin-top:8px}.result .buttons{margin-top:10px}.result p{font-size:14px}.result .reward{font-size:25px}.trial-result{margin-top:4px}.stock-tabs button{padding:7px 11px;font-size:12px}.stock-tabs .browse-hint{display:none}}
