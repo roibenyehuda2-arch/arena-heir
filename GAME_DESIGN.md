@@ -167,3 +167,7 @@ Mirrored opposing base limbs and a separate rear arm preserve character anatomy;
 ## Anatomical equipment fit — 2026-09-15
 
 Render limbs without stretching their source aspect. Rear limbs recede and feet follow facing; boots replace the lower bare foot. Attach equipment to joints and layer fingers over grips. Extract irregular accessory silhouettes rather than assume uniform atlas cells. Helmet direction and eye placement follow the head. These rules apply to the shared character renderer in town, shop and combat; no gameplay or layout redesign is part of this fitting revision.
+
+## Approved dwarf joint rig — 2026-09-15
+
+The dwarf weapon arm uses separate illustrated upper arm, forearm and gripping hand. Shoulder/elbow motion shares a single wrist origin with all axes; fingers occlude the shaft. Render the arm root beneath beard and pauldron. The approved Moonsteel helmet is a dedicated transparent overlay, with compact open-face variants for other dwarf tiers. Keep the rig modular for equipment swaps; do not substitute the full generated proof as a static fighter sprite.

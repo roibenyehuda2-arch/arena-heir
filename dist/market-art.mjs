@@ -41,7 +41,7 @@ async function accessorySheet(){
     ox.putImageData(pixels,0,0);return out;
   });
 }
-export async function loadMarket(){const [keepers,gear,spells,interiors,expanded,accessories,bodies,starterParts]=await Promise.all([sheet('shopkeepers',3,1,[[0,535],[540,1015],[1018,1536]]),sheet('equipment',4,8),sheet('spell-icons',5,1),(async()=>{const im=new Image();im.src=ROOT+'shop-interiors.webp';await im.decode();return im;})(),sheet('equipment-legends',4,8,null,[0,147,304,485,578,724,859,1002,1254]),accessorySheet(),sheet('starter-bodies',3,1),sheet('starter-parts',3,3,null,[0,340,668,1024])]);return {keepers,gear,spells,interiors,expanded,accessories,bodies,starterParts,urls:new Map()};}
+export async function loadMarket(){const [keepers,gear,spells,interiors,expanded,accessories,bodies,starterParts,dwarfMoon]=await Promise.all([sheet('shopkeepers',3,1,[[0,535],[540,1015],[1018,1536]]),sheet('equipment',4,8),sheet('spell-icons',5,1),(async()=>{const im=new Image();im.src=ROOT+'shop-interiors.webp';await im.decode();return im;})(),sheet('equipment-legends',4,8,null,[0,147,304,485,578,724,859,1002,1254]),accessorySheet(),sheet('starter-bodies',3,1),sheet('starter-parts',3,3,null,[0,340,668,1024]),sheet('dwarf-moon-helmet',1,1)]);return {keepers,gear,spells,interiors,expanded,accessories,bodies,starterParts,dwarfMoon:dwarfMoon[0],urls:new Map()};}
 export const KEEPERS={weapons:{index:0,name:'Bram',role:'Weaponsmith',hello:'A small axe starts the story. A great one finishes it.',bought:'A fine choice. Make it count!'},magic:{index:1,name:'Mira',role:'Arcane merchant',hello:'A little magic can change everything.',bought:'Yours now. Use it wisely!'},armor:{index:2,name:'Tilda',role:'Armorer',hello:'Go on. Try it on. A good fit saves lives.',bought:'Now that looks like a champion!'}};
 function emptyArmorSprite(market,slot){market.emptyArmor??=new Map();if(!market.emptyArmor.has(slot)){const c=document.createElement('canvas');c.width=c.height=120;const x=c.getContext('2d');x.strokeStyle='#e6c77a';x.lineWidth=7;x.lineCap='round';x.globalAlpha=.9;x.beginPath();x.arc(60,60,42,0,Math.PI*2);x.stroke();x.globalAlpha=.48;x.beginPath();x.moveTo(32,88);x.lineTo(88,32);x.stroke();market.emptyArmor.set(slot,c);}return market.emptyArmor.get(slot);}
 export function itemSprite(market,kind,slot,tier=0){if(slot==='magic')return market.spells[['lightning','sleep','frost','shield','meteor'].indexOf(tier)];if(!tier&&['defense','shoulders','helmet','shield'].includes(slot))return emptyArmorSprite(market,slot);const accessoryRow={shield:0,shoulders:1,helmet:2,boots:3}[slot];if(accessoryRow!==undefined)return market.accessories[accessoryRow*8+tier];const row=slot==='defense'?kind==='mage'?7:kind==='ranger'?6:4:slot==='ranged'?kind==='mage'?2:kind==='ranger'?3:0:kind==='mage'?2:kind==='ranger'?1:0;return tier>3?market.expanded[row*4+tier-4]:market.gear[row*4+tier];}
@@ -79,6 +79,31 @@ function wornHelmet(market,kind,tier){
     ctx.putImageData(pixels,0,0);
   }
   market.wornHelmets.set(tier,out);return out;
+}
+// Dwarf fitting uses an open-face version of each helmet. The inventory and
+// other classes retain the original full-face illustration. A curved brow and
+// short nasal leave the actual brows, eyes, moustache and beard unobstructed.
+function dwarfHelmet(market,tier){
+  market.dwarfHelmets??=new Map();
+  if(tier===2&&market.dwarfMoon)return market.dwarfMoon;
+  if(market.dwarfHelmets.has(tier))return market.dwarfHelmets.get(tier);
+  const source=wornHelmet(market,'dwarf',tier),out=document.createElement('canvas');
+  out.width=source.width;out.height=source.height;
+  const ctx=out.getContext('2d',{willReadFrequently:true});ctx.drawImage(source,0,0);
+  const pixels=ctx.getImageData(0,0,out.width,out.height),data=pixels.data;
+  const eye=HELMET_EYES[tier],nose=tier===1?.33:tier===2?.40:.50;
+  for(let y=0;y<out.height;y++)for(let x=0;x<out.width;x++){
+    const u=(x+.5)/out.width,v=(y+.5)/out.height;
+    // Gentle brow curve rises over both eyes. Outside it the small temple
+    // guards end at eye level, rather than hanging over the dwarf's beard.
+    const edge=Math.min(1,Math.abs(u-.5)/.40);
+    const brow=eye-.12+.065*edge*edge;
+    const noseLength=.105,noseDepth=v-brow;
+    const nasal=noseDepth>=0&&noseDepth<noseLength&&Math.abs(u-nose)<.027*(1-noseDepth/noseLength);
+    const temple=(u<.25||u>.77)&&v<eye+.22;
+    if(v>brow&&!nasal&&!temple)data[(y*out.width+x)*4+3]=0;
+  }
+  ctx.putImageData(pixels,0,0);market.dwarfHelmets.set(tier,out);return out;
 }
 // Fitting metadata is separate from the inventory art: stock icons retain their
 // original silhouettes, while worn items share anatomical anchors with the rig.
@@ -123,8 +148,8 @@ export function costume(market,kind,gear,slot='melee'){
     boots:gear.boots?itemSprite(market,kind,'boots',gear.boots):null,
     bootsParts:gear.boots?bootParts(market,kind,gear.boots):null,
     shoulders:gear.shoulders?itemSprite(market,kind,'shoulders',gear.shoulders):null,
-    helmetTier,helmet:helmetTier?wornHelmet(market,kind,helmetTier):null,
-    helmetFit:{width:kind==='dwarf'||kind==='thorn'?112:102,heightScale:.76,mirror:helmetTier===1,eyeX:helmetTier===1?.51:.49,eyeY:HELMET_EYES[helmetTier]},
+    helmetTier,helmet:helmetTier?(kind==='dwarf'||kind==='thorn'?dwarfHelmet(market,helmetTier):wornHelmet(market,kind,helmetTier)):null,
+    helmetFit:(kind==='dwarf'||kind==='thorn')&&helmetTier===2&&market.dwarfMoon?{width:126,heightScale:.66,mirror:true,eyeX:.5,eyeY:.68}:{width:kind==='dwarf'||kind==='thorn'?122:102,heightScale:kind==='dwarf'||kind==='thorn'?.64:.76,mirror:helmetTier===1,eyeX:helmetTier===1?.51:.49,eyeY:HELMET_EYES[helmetTier]},
     shield:gear.shield?itemSprite(market,kind,'shield',gear.shield):null
   };
 }

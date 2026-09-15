@@ -32,7 +32,7 @@ for(let tier=1;tier<=7;tier++){
   const original=new Uint8ClampedArray(stock.data);
   const market={accessories:Array(32).fill(stock),gear:Array(32).fill(stock),bodies:[stock,stock,stock]};
   const gear={melee:0,helmet:tier};
-  const fitted=context.makeCostume(market,'dwarf',gear);
+  const fitted=context.makeCostume(market,'mage',gear);
   assert.equal(fitted.helmetTier,tier);
   assert.equal(fitted.helmet.data[offset(50,90)+3],0,'dark face cavity is transparent at tier '+tier);
   assert.equal(fitted.helmet.data[offset(5,5)+3],255,'dark shell outside opening survives');
@@ -40,6 +40,14 @@ for(let tier=1;tier<=7;tier++){
   assert(fitted.helmet.data[offset(48,90)+3]>0&&fitted.helmet.data[offset(48,90)+3]<255,'edge paint fades smoothly');
   assert.deepEqual(stock.data,original,'source inventory sprite remains unchanged');
   assert.equal(context.stockSprite(market,'dwarf','helmet',tier),stock);
-  assert.equal(context.makeCostume(market,'mage',gear).helmet,fitted.helmet,'worn result is cached');
+  assert.equal(context.makeCostume(market,'mage',gear).helmet,fitted.helmet,'full-face result is cached');
+  const dwarf=context.makeCostume(market,'dwarf',gear);
+  assert.notEqual(dwarf.helmet,fitted.helmet,'dwarf open-face derivative is independent');
+  assert.equal(context.makeCostume(market,'dwarf',gear).helmet,dwarf.helmet,'dwarf result is cached');
+  assert.equal(dwarf.helmet.data[offset(49,90)+3],0,'lower metal is removed above the beard');
+  assert.equal(dwarf.helmet.data[offset(5,5)+3],255,'dwarf crown remains opaque');
+  const eyeY=[.62,.59,.63,.64,.67,.68,.65,.76][tier];
+  for(const eyeX of [30,65])assert.equal(dwarf.helmet.data[offset(eyeX,Math.floor(eyeY*100))+3],0,'both actual eyes remain visible');
+  assert.deepEqual(stock.data,original,'dwarf fitting leaves stock art unchanged');
 }
-console.log('All 7 worn helmet cavities: transparency, shell/trim preservation, cache and unchanged stock icons pass.');
+console.log('All 7 helmet tiers: full-face alpha, separate dwarf open-face fitting, visible eyes, intact crowns and unchanged stock icons pass.');

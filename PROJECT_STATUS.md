@@ -1,3 +1,13 @@
+# Approved dwarf arm and helmet implementation — 2026-09-15
+
+Implements the approved visual direction for the dwarf, based on main `13aaab75066e22fae4c4cdc5623e084546ada43e`. New transparent upper-arm, forearm and gripping-hand artwork uses separate shoulder and elbow transforms. The fingers render over the weapon shaft; the hand and every axe share one grip origin during idle, movement and attacks. Beard and shoulder armor cover the limb root in the correct order. Prior rigs remain as compatibility fallback.
+
+A new Moonsteel helmet overlay follows the approved silver-blue proof and has genuinely transparent face openings. Other dwarf helmets receive compact open-face derivatives; stock icons and other class helmets remain unchanged. This is a modular implementation of the approved direction, not a flattened replacement of the entire character. Mage/ranger arm redesign remains separate future work.
+
+Validation: full npm test passes, with new both-facing wrist/weapon attachment tests across attack extremes and class-isolated helmet tests. Cloud Chrome reviewed all eight dwarf equipment tiers, the reverse-facing moving rig, live town and advanced-axe shop fitting, and practice combat. Physical iPhone/Safari was not tested. Marker: `dwarf-joints-1`. Authorized main publication follows validation.
+
+---
+
 # Character anatomy and equipment fitting — 2026-09-15
 
 Focused revision of release `8aef968be92b1c2fe5040cde4c362993abf579a6`. Bare limbs retain source proportions, with a smaller far leg and both feet following the fighter facing. Worn boots replace the exposed lower foot, are separated along their overlapping silhouettes, and face with the body. Weapons share a fist anchor between poses; fingers layer over the shaft. Shields follow the supporting forearm. The leaf helmet is mirrored to match the head and worn helmets use a bounded eye-aligned fit.
