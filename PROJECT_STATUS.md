@@ -1,3 +1,15 @@
+# Project status — 2026-09-15
+
+## Character fitting and shop staging — release prepared
+
+Based on latest main `27f4cca503f169ea5053877f33b3c28153995c24`, preserving the new starter rigs, accessory slots, town signs, combat presentation and saved journeys. Opposing base arms and legs now mirror correctly, with a rear arm added to mage/ranger. Equipped boots keep their distinct paired artwork. Worn helmets use cached transparent face cavities while inventory artwork remains unchanged; fitted size and tier-specific eye anchors align the helmets to each character rather than leaving a small mask on the forehead.
+
+Shopkeepers now stand behind a category-colored paneled counter. Both merchant and fitting-room hero are larger, with speech/label headroom and stage clipping. Phone fitting stages grow to at least 300px and short screens scroll; the current multi-row stock and purchase-panel order remain. Arcane previews still do not replace held equipment.
+
+QA: full npm test passes, including seven-tier helmet alpha/trim/source/cache checks, 96 catalog fitting cases, all-class campaigns and prior save/UI suites. Changed JavaScript syntax and whitespace checks pass. Cloud Chrome visual review inspected actual runtime rigs for dwarf/ranger/mage at starter, Royal and Dragon tiers in both directions, corrected low mage/ranger helmet placement, and reviewed the enlarged desktop Weaponsmith and 390px Armory. Physical iPhone/Safari was not tested. Shared helmet silhouettes remain; class-specific hat/hood artwork is future work. Build marker: `design-fit-2`. Deployment verification will follow the authorized main push.
+
+---
+
 # Project status — 2026-09-13
 
 ## Mobile world, layered starter and fighter-anchored controls — published and verified

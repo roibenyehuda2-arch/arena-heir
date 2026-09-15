@@ -159,3 +159,7 @@ Combat uses a fixed full-arena camera. Fighter scale depends on viewport size, n
 # Approved market direction — 2026-09-13
 
 Shops should foreground a large merchant and display multiple equipment pieces in rows rather than a phone-only horizontal carousel. Keep a separate fitting area and readable buy controls. Class-specific wardrobes (dwarf helmets/armor, mage hats/robes, ranger hoods/leather) and identity-preserving starter illustrations are approved direction but are not all implemented by the market layout iteration.
+
+## Fitted character and merchant staging — 2026-09-15
+
+Mirrored opposing base limbs and a separate rear arm preserve character anatomy; paired equipment sprites retain their original left/right orientation. A worn helmet is a fitted, transparent-face derivative of the stock illustration, with tier-specific eye alignment. The shopkeeper stands behind a counter on the left and the larger player previews equipment on the right. Mobile stages reserve at least 300px and use vertical scrolling to preserve readable purchases and multi-row stock. Shared helmet silhouettes are retained until class-specific hats and hoods are illustrated.

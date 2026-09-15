@@ -40,7 +40,7 @@
 }
 @media(max-height:620px) and (max-width:799px){.in-town #screen{min-height:700px}.in-town .town-scene{height:320px;bottom:auto}.in-town .town-nav{top:440px;bottom:auto}.in-town .bottom{position:absolute;top:552px;bottom:auto}.market-layout{grid-template-rows:210px auto auto auto}}
 @media(max-width:799px){.stock-tabs{flex-wrap:wrap}.browse-hint{max-width:none}.stock-tabs button{padding:8px 10px;font-size:13px}.stock-item{padding:5px 4px 8px}.stock-item strong{font-size:12px}.item-price{font-size:12px}.purchase-panel{position:relative}.fitting-label{min-height:44px}.merchant-speech{max-width:42%}}
-@media(max-width:799px){.market-layout{grid-template-rows:clamp(210px,30svh,280px) auto auto auto}.purchase-panel{grid-row:3}.shelf-items{grid-row:4}.purchase-detail p{font-size:13px}.purchase-detail h2{font-size:16px}}
+@media(max-width:799px){.market-layout{grid-template-rows:clamp(300px,43svh,380px) auto auto auto}.purchase-panel{grid-row:3}.shelf-items{grid-row:4}.purchase-detail p{font-size:13px}.purchase-detail h2{font-size:16px}}
 @media(max-width:359px){.shelf-items{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* Roaring arena: crowd meter, rival character and shop verdicts. */
 .crowd-meter{width:min(560px,calc(100% - 8%));margin:2px auto 0;text-align:center}
