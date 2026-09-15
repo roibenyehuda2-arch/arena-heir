@@ -163,3 +163,7 @@ Shops should foreground a large merchant and display multiple equipment pieces i
 ## Fitted character and merchant staging — 2026-09-15
 
 Mirrored opposing base limbs and a separate rear arm preserve character anatomy; paired equipment sprites retain their original left/right orientation. A worn helmet is a fitted, transparent-face derivative of the stock illustration, with tier-specific eye alignment. The shopkeeper stands behind a counter on the left and the larger player previews equipment on the right. Mobile stages reserve at least 300px and use vertical scrolling to preserve readable purchases and multi-row stock. Shared helmet silhouettes are retained until class-specific hats and hoods are illustrated.
+
+## Anatomical equipment fit — 2026-09-15
+
+Render limbs without stretching their source aspect. Rear limbs recede and feet follow facing; boots replace the lower bare foot. Attach equipment to joints and layer fingers over grips. Extract irregular accessory silhouettes rather than assume uniform atlas cells. Helmet direction and eye placement follow the head. These rules apply to the shared character renderer in town, shop and combat; no gameplay or layout redesign is part of this fitting revision.

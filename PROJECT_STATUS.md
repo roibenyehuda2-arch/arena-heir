@@ -1,3 +1,13 @@
+# Character anatomy and equipment fitting — 2026-09-15
+
+Focused revision of release `8aef968be92b1c2fe5040cde4c362993abf579a6`. Bare limbs retain source proportions, with a smaller far leg and both feet following the fighter facing. Worn boots replace the exposed lower foot, are separated along their overlapping silhouettes, and face with the body. Weapons share a fist anchor between poses; fingers layer over the shaft. Shields follow the supporting forearm. The leaf helmet is mirrored to match the head and worn helmets use a bounded eye-aligned fit.
+
+Root asset fix: the accessory atlas is irregular, not an equal 8-by-4 grid. Connected silhouette extraction removes adjacent-item fragments and restores clipped shields, helmets and boots. Starter row boundaries remove stray artwork under mage feet. Original source images are preserved. Gameplay, town and shop layout are unchanged.
+
+QA: full npm test passed; 96 class/tier/phone fitting bounds retained with the grip-side contract replacing the former detached-weapon requirement. Cloud Chrome reviewed actual starter and equipped dwarf, mage and ranger rigs, isolated boots/helmets, combined equipment and reversed facing. Physical mobile Safari was not tested. Release marker `anatomy-fit-3`; publication verification follows the main update. Shared class helmet artwork remains a limitation.
+
+---
+
 # Project status — 2026-09-15
 
 ## Character fitting and shop staging — release prepared

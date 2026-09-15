@@ -21,6 +21,6 @@ function recorder(){let m=[1,0,0,1,0,0],stack=[];const boxes=[];const point=(x,y
 let cases=0;for(const kind of ['dwarf','ranger','mage'])for(let tier=0;tier<8;tier++)for(const width of [320,360,390,430]){
  const weapon={width:tier%2?300:110,height:180},armor={width:180,height:160},ctx=recorder(),stageWidth=width-20,stageHeight=667*.29,scale=Math.min((stageHeight-65)/260,stageWidth/430,.93),x=stageWidth*.53;
  hero(ctx,{parts:Array.from({length:12},()=>({})),classes:Array.from({length:12},()=>({}))},kind,x,stageHeight-28,{melee:tier,ranged:0,defense:tier,boots:0,magic:0},{fitting:true,scale,time:0,marketGear:{weapon,weaponTier:tier,armor:tier?armor:null}});
- const box=ctx.boxes.find(b=>b.im===weapon);assert(box);assert(box.left>x+65*scale,kind+' weapon must stay outside face and torso');assert(box.right<stageWidth,kind+' weapon fits phone stage');assert(box.top>=0,kind+' weapon stays within preview');cases++;
+ const box=ctx.boxes.find(b=>b.im===weapon);assert(box);assert(box.left>x+15*scale,kind+' weapon stays on the gripping side of the torso');assert(box.top>stageHeight-28-225*scale,kind+' weapon stays below crown height');assert(box.right<stageWidth,kind+' weapon fits phone stage');assert(box.top>=0,kind+' weapon stays within preview');cases++;
 }
 console.log('Expanded catalog purchases, bonuses, unlocks and save round trips pass; fitting bounds pass',cases,'class/tier/phone cases.');
